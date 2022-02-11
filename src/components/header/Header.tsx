@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 import styles from './Header.module.scss';
 
@@ -8,24 +9,24 @@ interface MenuItem {
   show: boolean;
 }
 
-const menuItems:MenuItem[] = [
+const menuItems: MenuItem[] = [
   {
     href: '/',
     label: 'Главная',
     show: true,
-  },  {
+  }, {
     href: '/graph',
     label: 'Граф',
     show: true,
-  },  {
+  }, {
     href: '/map',
     label: 'Карта',
     show: true,
-  },  {
+  }, {
     href: '/profile',
     label: 'Профиль',
     show: true,
-  },  {
+  }, {
     href: '/login',
     label: 'Войти',
     show: true,
@@ -37,11 +38,11 @@ const menuItems:MenuItem[] = [
   },
 ]
 
-export const Header:React.FC = ()=>{
+export const Header: React.FC = () => {
   return <div className={styles.container}>
-    {menuItems.map((item)=> {
+    {menuItems.map((item) => {
       if (!item.show) return null
-      return <a href={item.href}>{item.label}</a>
+      return <Link key={item.href} to={item.href}>{item.label}</Link>
     })}
   </div>
 }
