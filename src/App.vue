@@ -1,24 +1,11 @@
 <template>
-    <div id="nav">
-      <header-component/>
-    </div>
+  <div id="nav">
+    <router-link to="/">Home</router-link>
+    <router-link to="/about">About</router-link>
+  </div>
+  <router-view/>
 </template>
-
-<script>
-import HeaderComponent from "./components/header/HeaderComponent"
-
-export default {
-  components: {
-    HeaderComponent
-  }
-}
-</script>
 
 <style>
 
-#app {
-  margin: 0 80px;
-  background: aliceblue;
-  padding: 30px 20px 0 20px;
-}
 </style>
