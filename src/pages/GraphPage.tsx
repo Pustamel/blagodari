@@ -1,15 +1,6 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-interface User {
-  uuid: string;
-}
-
-interface Connection {
-  source: string;
-  target: string;
-}
-
-const url: string = 'https://api.blagodarie.org/api/getstats/user_connections_graph?from=0&number=25'
+import { fetchUserConnectionsGraph } from '../api/api';
+import { Connection, User } from '../types/types';
 
 export const GraphPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([])
@@ -17,7 +8,7 @@ export const GraphPage: React.FC = () => {
   useEffect(() => {
 
     const fetchData = async () => {
-      const { data } = await axios.get(url)
+      const data = await fetchUserConnectionsGraph()
       setUsers(data.users)
       setConnections(data.connections)
     }
