@@ -13,8 +13,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/graph" element={<GraphPage />} />
         <Route path="/map" element={<MapPage />} />
+        <Route path="/graph" element={<GraphPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>

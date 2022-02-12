@@ -39,10 +39,12 @@ const menuItems: MenuItem[] = [
 ]
 
 export const Header: React.FC = () => {
-  return <div className={styles.container}>
-    {menuItems.map((item) => {
-      if (!item.show) return null
-      return <Link key={item.href} to={item.href}>{item.label}</Link>
-    })}
-  </div>
+  return (
+    <div className={styles.container}>
+      {menuItems.map((item) => {
+        if (!item.show) return null
+        return <Link className={styles.link} key={item.href} to={item.href}>{item.label}</Link>
+      })}
+    </div>
+  )
 }
