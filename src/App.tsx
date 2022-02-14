@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { Header } from './components/header/Header';
 import { GraphPage } from './pages/GraphPage';
 import { HomePage } from './pages/HomePage';
-import { LoginPage } from './pages/LoginPage';
+import { LoginPage } from './pages/LoginPage/LoginPage';
 import { MapPage } from './pages/MapPage';
 import { ProfilePage } from './pages/ProfilePage';
 

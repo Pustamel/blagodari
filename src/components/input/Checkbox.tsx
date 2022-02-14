@@ -1,16 +1,15 @@
 import React from 'react';
 
-
 interface CheckboxProps {
   onChange(): void;
+  id?: string;
 }
 
-export const Checkbox: React.FC<CheckboxProps> = ({ children, onChange }) => {
-  console.log(children);
+export const Checkbox: React.FC<CheckboxProps> = ({ children, onChange, id }) => {
 
   return (
     <label >
-      <input onChange={onChange} type="checkbox" />
+      <input id={id} onChange={onChange} type="checkbox" />
       {children}
     </label>
   )
