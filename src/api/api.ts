@@ -23,7 +23,7 @@ export const fetchUserConnectionsGraph = async (from = 0, number = 25) => {
 export const authTelegram = async (user:any) => {
   const body = JSON.stringify(user)
   const headers = {"Content-Type": "application/json"}
-  const { data } = await instance.post('auth/telegram', body, {headers})
+  const { data } = await instance.post('react', body, {headers})
   document.cookie = `${data.user_uuid}=${data.auth_token}`
   return data
 }
