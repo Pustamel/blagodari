@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Checkbox} from '../../components/input/Checkbox';
+import {Checkbox} from '../../UI/input/Checkbox';
 import styles from './LoginPage.module.scss'
 import {TLoginButton, TLoginButtonSize} from "../../api/Telegram"
 import {authTelegram} from "../../api/api"
@@ -15,17 +15,13 @@ export const LoginPage: React.FC = () => {
         <div>
             <h1>Войти</h1>
             <TLoginButton
-                botName="blagodarie_dev_bot"
+                botName="blagorodabot"
                 buttonSize={TLoginButtonSize.Large}
                 lang="ru"
                 usePic={false}
                 cornerRadius={20}
                 onAuthCallback={(user) => {
                     authTelegram(user)
-                    document.cookie = `name=${user.first_name}`
-                    document.cookie = `id=${user.id}`
-                    document.cookie = `photo=${user.photo_url}`
-                    document.cookie = `hash=${user.hash}`
                 }}
                 requestAccess="write"
             />

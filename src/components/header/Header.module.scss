@@ -1,14 +1,15 @@
 .container {
   display: flex;
   justify-content: space-between;
-  background: rgb(238,174,202);
-  background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
-  padding:10px;
+  background: #FFEEDE;
+  padding: 27px 40px 27px 133px;
+  border-bottom: 1px solid #F3D5B9;
+  font-size: 18px;
 }
 
-.link{
-  text-decoration:none;
+.link {
+  text-decoration: none;
   font-size: larger;
   font-weight: bold;
-
+  color: #610A0A;
 }

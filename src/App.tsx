@@ -10,7 +10,7 @@ import { ProfilePage } from './pages/ProfilePage';
 function App() {
   return (
     <BrowserRouter>
-      <Header />
+      <Header/>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/map" element={<MapPage />} />
