@@ -74,7 +74,7 @@ export class TLoginButton extends Component<TLoginButtonProps> {
       script.setAttribute('data-request-access', requestAccess);
     }
 
-    this._containerRef.current!.appendChild(script);
+    this._containerRef.current?.appendChild(script);
   }
 
   render(): ReactNode {

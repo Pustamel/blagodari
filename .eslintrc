@@ -16,7 +16,8 @@
         "allowString" : false,
         "allowNumber" : false
       }
-    ]
+    ],
+    "@typescript-eslint/no-explicit-any": "off"
   },
   "ignorePatterns": ["src/**/*.test.ts", "src/frontend/generated/*"]
 }
