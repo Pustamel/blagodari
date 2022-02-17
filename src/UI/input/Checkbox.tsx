@@ -5,12 +5,15 @@ interface CheckboxProps {
   id?: string;
 }
 
-export const Checkbox: React.FC<CheckboxProps> = ({ children, onChange, id }) => {
-
+export const Checkbox: React.FC<CheckboxProps> = ({
+  children,
+  onChange,
+  id,
+}) => {
   return (
-    <label >
+    <label>
       <input id={id} onChange={onChange} type="checkbox" />
       {children}
     </label>
-  )
-}
+  );
+};
