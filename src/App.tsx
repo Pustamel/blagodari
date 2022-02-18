@@ -5,7 +5,7 @@ import { GraphPage } from './pages/GraphPage';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage/LoginPage';
 import { MapPage } from './pages/MapPage';
-import { ProfilePage } from './pages/ProfilePage';
+import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 
 function App() {
   return (

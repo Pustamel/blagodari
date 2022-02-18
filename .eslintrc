@@ -17,7 +17,8 @@
         "allowNumber" : false
       }
     ],
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-useless-escape": "off"
   },
   "ignorePatterns": ["src/**/*.test.ts", "src/frontend/generated/*"]
 }
