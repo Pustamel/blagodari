@@ -23,7 +23,7 @@ export const LoginPage: React.FC = () => {
           authTelegram(user);
         }}
         requestAccess="write"
-        isDisable={isAccept}
+        isDisable={!isAccept}
       />
       <div className={styles.acceptTerms}>
         <Checkbox onChange={handleAccept} id="terms" />
