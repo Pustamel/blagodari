@@ -26,6 +26,7 @@ export type TLoginButtonProps = Readonly<{
   requestAccess?: string;
   usePic?: boolean;
   lang?: string;
+  isDisable?: boolean;
 }>;
 
 export class TLoginButton extends Component<TLoginButtonProps> {
@@ -41,6 +42,7 @@ export class TLoginButton extends Component<TLoginButtonProps> {
       onAuthCallback,
       redirectUrl,
       lang,
+      isDisable,
     } = this.props;
 
     if (onAuthCallback != null) {
@@ -72,6 +74,9 @@ export class TLoginButton extends Component<TLoginButtonProps> {
     }
     if (requestAccess != null) {
       script.setAttribute('data-request-access', requestAccess);
+    }
+    if (isDisable != null) {
+      script.setAttribute('disabled', `${isDisable}`);
     }
 
     this._containerRef.current?.appendChild(script);

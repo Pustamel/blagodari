@@ -1,5 +1,5 @@
 import { initialStateType, payloadProfile } from './types';
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { thunkGetProfile } from './thunks';
 
 const initialState: initialStateType = {
@@ -35,9 +35,7 @@ export const MainReducer = createSlice({
       state,
       action: PayloadAction<payloadProfile>,
     ) => {
-      console.log(action);
       state.profile = action.payload;
-      console.log('state:', current(state));
     },
     [thunkGetProfile.pending.type]: state => {
       //example for in process
