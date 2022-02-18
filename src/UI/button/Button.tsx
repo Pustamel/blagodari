@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Button.module.scss';
 
 interface ButtonProps {
-  onClick(): void;
+  onClick?: () => void;
   title: string;
 }
 
