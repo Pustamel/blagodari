@@ -6,6 +6,7 @@
 .pnp.js
 .idea
 blagodari.iml
+.env
 
 # testing
 /coverage

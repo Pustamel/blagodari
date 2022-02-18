@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Checkbox } from '../../UI/input/Checkbox';
 import styles from './LoginPage.module.scss';
 import { TLoginButton, TLoginButtonSize } from '../../api/Telegram';
@@ -10,6 +10,21 @@ export const LoginPage: React.FC = () => {
   const handleAccept = () => {
     setIsAccept(!isAccept);
   };
+
+  useEffect(() => {
+    if (!isAccept) {
+      const buttonTelegram = document?.querySelector(
+        '.tgme_widget_login_button',
+      );
+      buttonTelegram?.setAttribute('disabled', 'true');
+    }
+    {
+      const buttonTelegram = document?.querySelector(
+        '.tgme_widget_login_button',
+      );
+      buttonTelegram?.setAttribute('disabled', 'false');
+    }
+  }, [isAccept]);
 
   return (
     <div>
