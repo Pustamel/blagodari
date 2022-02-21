@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ProfilePage.module.scss';
 import { Button } from '../../UI/button/Button';
 import { thunkGetProfile } from '../../store/thunks';
@@ -6,10 +6,12 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import GoogleMapReact from 'google-map-react';
 import { Marker } from './Marker';
 import classNames from 'classnames';
+import { useWindowDimensions } from '../../utils/functions';
 
 export const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector(state => state.MainReducer.profile);
+  const [widthMap, setWidthMap] = useState<string>('50%');
 
   useEffect(() => {
     dispatch(thunkGetProfile());
@@ -41,6 +43,57 @@ export const ProfilePage: React.FC = () => {
     zoom: 11,
   };
 
+  const { width } = useWindowDimensions();
+
+  const informationLayout = (
+    <>
+      <p>
+        Пол:{' '}
+        <span className={styles.lightText}>
+          {state.gender === 'm' ? 'мужчина' : 'женщина'}
+        </span>
+      </p>
+      <span>
+        <p>
+          Дата рождения:
+          <span className={styles.lightText}>
+            {state.dob === null ? '―' : state.dob}
+          </span>
+        </p>
+        <p>
+          Дата смерти:
+          <span className={styles.lightText}>
+            {state.dod === null ? '―' : state.dod}
+          </span>
+        </p>
+      </span>
+      <span>
+        <p>
+          Отец:{' '}
+          <span className={styles.lightText}>
+            {state.father?.first_name} {state.father?.last_name}{' '}
+            {state.father?.middle_name}
+          </span>
+        </p>
+        <p>
+          Мать:{' '}
+          <span className={styles.lightText}>
+            {state.mother?.first_name} {state.mother?.last_name}{' '}
+            {state.mother?.middle_name}
+          </span>
+        </p>
+      </span>
+    </>
+  );
+
+  useEffect(() => {
+    if (width <= 1100) {
+      setWidthMap('100%');
+    } else if (width < 1200) {
+      setWidthMap('90%');
+    }
+  }, [width]);
+
   return (
     <div className={styles.containerProfilePage}>
       <div className={styles.containerFirstBlock}>
@@ -52,7 +105,13 @@ export const ProfilePage: React.FC = () => {
           }
           alt=""
         />
-        <Button title="Редактировать профиль" onClick={() => ''} />
+        {width < 640 && <div>{informationLayout}</div>}
+
+        <Button
+          className={styles.btn}
+          title="Редактировать профиль"
+          onClick={() => ''}
+        />
       </div>
 
       <div className={styles.containerSecondBlock}>
@@ -83,48 +142,15 @@ export const ProfilePage: React.FC = () => {
           </div>
         </div>
 
-        <p>
-          Пол:{' '}
-          <span className={styles.lightText}>
-            {state.gender === 'm' ? 'мужчина' : 'женщина'}
-          </span>
-        </p>
-        <span>
-          <p>
-            Дата рождения:
-            <span className={styles.lightText}>
-              {state.dob === null ? '―' : state.dob}
-            </span>
-          </p>
-          <p>
-            Дата смерти:
-            <span className={styles.lightText}>
-              {state.dod === null ? '―' : state.dod}
-            </span>
-          </p>
-        </span>
-        <span>
-          <p>
-            Отец:{' '}
-            <span className={styles.lightText}>
-              {state.father?.first_name} {state.father?.last_name}{' '}
-              {state.father?.middle_name}
-            </span>
-          </p>
-          <p>
-            Мать:{' '}
-            <span className={styles.lightText}>
-              {state.mother?.first_name} {state.mother?.last_name}{' '}
-              {state.mother?.middle_name}
-            </span>
-          </p>
-        </span>
+        {/*DESKTOP INFORMATION*/}
+        {width > 640 && <>{informationLayout}</>}
+
         <p>
           Местоположение:
           <span className={styles.lightText}> need reverse geocode </span>
         </p>
         <div>
-          <div style={{ height: '50vh', width: '100%' }}>
+          <div style={{ height: '70vh', width: widthMap }}>
             <GoogleMapReact
               bootstrapURLKeys={{
                 key: 'AIzaSyC3u8u23ct68CEAxVm984B5h2lyFmJgH64&region=RU&language=ru',
