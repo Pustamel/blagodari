@@ -5,19 +5,28 @@ import { TLoginButton, TLoginButtonSize } from '../../api/Telegram';
 import { authTelegram } from '../../api/api';
 import { getCookie } from '../../utils/functions';
 import { Navigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { setAuth } from '../../store/state';
 
 export const LoginPage: React.FC = () => {
   const [isAccept, setIsAccept] = useState(false);
+  const state = useAppSelector(state => state.MainReducer);
+  const dispatch = useAppDispatch();
 
   const handleAccept = () => {
     setIsAccept(!isAccept);
   };
 
-  const cookie = getCookie('tokenAuth');
-
   useEffect(() => {
-    getCookie('tokenAuth');
-  }, [cookie]);
+    if (
+      getCookie('tokenAuth') !== undefined &&
+      getCookie('tokenAuth') !== null
+    ) {
+      dispatch(setAuth(true));
+    } else {
+      dispatch(setAuth(false));
+    }
+  }, [state.auth]);
 
   return (
     <div className={styles.containerLogin}>
@@ -42,11 +51,8 @@ export const LoginPage: React.FC = () => {
           </a>
         </label>
       </div>
-      {cookie === undefined || cookie === null ? (
-        ''
-      ) : (
-        <Navigate to={'/profile'} />
-      )}
+      {/* eslint-disable @typescript-eslint/strict-boolean-expressions */}
+      {state.auth ? <Navigate to={'/profile'} /> : ''}
     </div>
   );
 };

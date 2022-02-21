@@ -41,8 +41,6 @@ export const ProfilePage: React.FC = () => {
     zoom: 11,
   };
 
-  console.log(state);
-
   return (
     <div className={styles.containerProfilePage}>
       <div className={styles.containerFirstBlock}>

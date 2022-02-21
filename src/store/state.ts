@@ -30,6 +30,7 @@ const initialState: initialStateType = {
     wishes: [],
   },
   loading: false,
+  auth: false,
 };
 
 export const MainReducer = createSlice({
@@ -40,6 +41,9 @@ export const MainReducer = createSlice({
     getProfile: state => {
       //example
       return state;
+    },
+    setAuth: (state, action) => {
+      state.auth = action.payload;
     },
   },
   extraReducers: {
@@ -67,6 +71,7 @@ export const testFnction = () => {
   //example simple action
   MainReducer.actions.getProfile();
 };
+
 testFnction();
 
-export const { getProfile } = MainReducer.actions;
+export const { getProfile, setAuth } = MainReducer.actions;

@@ -1,6 +1,7 @@
 export interface initialStateType {
   profile: profileData;
   loading: boolean;
+  auth: boolean;
 }
 
 interface locationType {
