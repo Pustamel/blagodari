@@ -4,14 +4,19 @@ import React from 'react';
 interface propsMarker {
   lat?: number;
   lng?: number;
+  src?: string;
 }
 
-export const Marker = ({ lat, lng }: propsMarker) => {
+export const Marker = ({ lat, lng, src }: propsMarker) => {
   return (
     <div className={styles.marker}>
       <img
-        src="https://i.pinimg.com/564x/67/d8/01/67d801622b2daad05d8b50d6370d0dcf.jpg"
-        alt=""
+        src={
+          src !== ''
+            ? src
+            : 'https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png'
+        }
+        alt={`${lat}` + `${lng}`}
       />
     </div>
   );

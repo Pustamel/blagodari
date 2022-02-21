@@ -46,7 +46,14 @@ export const ProfilePage: React.FC = () => {
   return (
     <div className={styles.containerProfilePage}>
       <div className={styles.containerFirstBlock}>
-        <img src={state.photo} alt="" />
+        <img
+          src={
+            state.photo !== ''
+              ? state.photo
+              : 'https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png'
+          }
+          alt=""
+        />
         <Button title="Редактировать профиль" onClick={() => ''} />
       </div>
 
@@ -86,15 +93,15 @@ export const ProfilePage: React.FC = () => {
         </p>
         <span>
           <p>
-            Дата рождения:{' '}
+            Дата рождения:
             <span className={styles.lightText}>
               {state.dob === null ? '―' : state.dob}
             </span>
           </p>
           <p>
-            Дата смерти:{' '}
+            Дата смерти:
             <span className={styles.lightText}>
-              {state.dod === null ? '―' : state.dod}{' '}
+              {state.dod === null ? '―' : state.dod}
             </span>
           </p>
         </span>
@@ -128,7 +135,7 @@ export const ProfilePage: React.FC = () => {
               defaultZoom={defaultPropsMap.zoom}
               yesIWantToUseGoogleMapApiInternals
             >
-              <Marker lat={center.lat} lng={center.lng} />
+              <Marker src={state.photo} lat={center.lat} lng={center.lng} />
             </GoogleMapReact>
           </div>
         </div>
