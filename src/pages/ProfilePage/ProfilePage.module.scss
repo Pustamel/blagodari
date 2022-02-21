@@ -1,5 +1,39 @@
+.containerProfilePage {
+  display: flex;
+  width: 100%;
+}
+
 .containerFirstBlock {
+  width: 15%;
+  background: cornflowerblue;
+
+  img {
+    background: #610a0a;
+    width: 250px;
+    height: 250px;
+  }
 }
 
 .containerSecondBlock {
+  min-width: 50%;
+  background: #8bed64;
+}
+
+.containerInformationBlocks {
+  display: flex;
+  flex-direction: row;
+  gap: 37px;
+  min-width: 210px;
+  min-height: 200px;
+}
+
+.infoBlock {
+  padding: 10px;
+  background: #F4DFCB;
+}
+
+.marker img{
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
 }
