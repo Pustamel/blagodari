@@ -13,18 +13,34 @@ interface locationType {
   longitude: string | null;
 }
 
-interface profileData {
+export interface profileData {
   photo: string;
   first_name: string;
   last_name: string;
   middle_name: string;
   gender: string | null;
-  ability: string | null;
-  mother: string | null;
-  father: string | null;
+  abilities: Array<abilitiesAndWishesType>;
+  mother: parentType | null;
+  father: parentType | null;
   dob: string | null;
   dod?: string | null;
   location?: locationType;
+  wishes: Array<abilitiesAndWishesType>
+}
+
+interface abilitiesAndWishesType {
+  text: string
+  uuid: string
+  last_edit: number
+}
+
+interface parentType {
+  first_name: string
+  last_name: string
+  middle_name: string
+  uuid: string
+  photo: string
+  location?: locationType
 }
 
 export type ThunkAction<
@@ -43,19 +59,3 @@ function withPayloadType<T>() {
 }
 
 createAction('GET_PROFILE_DATA', withPayloadType<string>());
-
-export interface payloadProfile {
-  ability: string;
-  dob: string | null;
-  dod: string | null;
-  fame: number;
-  photo: string;
-  first_name: string;
-  last_name: string;
-  middle_name: string;
-  gender: string | null;
-  mother: string | null;
-  father: string | null;
-  latitude: string | null;
-  longitude: string | null;
-}
