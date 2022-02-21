@@ -12,6 +12,7 @@ import { MobileHeader } from './MobileHeader';
 export const Header: React.FC = () => {
   const cookie = getCookie('tokenAuth');
   const [isAuth, setIsAuth] = useState(Boolean(cookie));
+  const [isOpenMobileHeader, setIsOpenMobileHeader] = useState(false);
 
   const logout = () => {
     delete_cookie('tokenAuth');
@@ -33,6 +34,10 @@ export const Header: React.FC = () => {
 
   const { width } = useWindowDimensions();
 
+  const closeNavMobile = () => {
+    setIsOpenMobileHeader(false);
+  };
+
   return (
     <div className={styles.container}>
       {width > 780 ? (
@@ -53,17 +58,20 @@ export const Header: React.FC = () => {
           {authButton()}
         </>
       ) : (
-        <MobileHeader>
-          <Link className={styles.link} to="/">
+        <MobileHeader
+          setIsOpen={setIsOpenMobileHeader}
+          isOpen={isOpenMobileHeader}
+        >
+          <Link onClick={closeNavMobile} className={styles.link} to="/">
             Главная
           </Link>
-          <Link className={styles.link} to="/map">
+          <Link onClick={closeNavMobile} className={styles.link} to="/map">
             Карта
           </Link>
-          <Link className={styles.link} to="/graph">
+          <Link onClick={closeNavMobile} className={styles.link} to="/graph">
             Граф
           </Link>
-          <Link className={styles.link} to="/profile">
+          <Link onClick={closeNavMobile} className={styles.link} to="/profile">
             Профиль
           </Link>
           {authButton()}

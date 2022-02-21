@@ -13,6 +13,8 @@
   @media (max-width: 780px) {
     padding: 0;
     background: none;
+    position: absolute;
+    z-index: 10;
   }
 }
 
@@ -41,6 +43,7 @@ h1 {
   height: 100%;
   position: fixed;
   opacity: 0.8;
+  top: 0;
 }
 
 .cross {
@@ -55,6 +58,7 @@ h1 {
   position: fixed;
   background: #ffeede;
   right: 0;
+  top: 0;
   .mobileList {
     margin-top: 20px;
     display: flex;

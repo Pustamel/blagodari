@@ -1,15 +1,19 @@
 import burger from '../../assets/icons/burger.svg';
 import cross from '../../assets/icons/cross.svg';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import styles from './Header.module.scss';
 
 interface mobileHeaderType {
   children: ReactNode;
+  isOpen: boolean;
+  setIsOpen: (arg0: boolean) => void;
 }
 
-export const MobileHeader = ({ children }: mobileHeaderType) => {
-  const [isOpen, setIsOpen] = useState(false);
-
+export const MobileHeader = ({
+  children,
+  isOpen,
+  setIsOpen,
+}: mobileHeaderType) => {
   return (
     <div className={styles.containerMobileHeader}>
       {!isOpen && (
@@ -20,7 +24,7 @@ export const MobileHeader = ({ children }: mobileHeaderType) => {
 
       {isOpen ? (
         <>
-          <div className={styles.shadow} />
+          <div className={styles.shadow} onClick={() => setIsOpen(false)} />
           <div className={styles.mobileNavigation}>
             <div className={styles.cross}>
               <img src={cross} onClick={() => setIsOpen(false)} alt="" />
