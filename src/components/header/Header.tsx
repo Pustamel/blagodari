@@ -26,7 +26,7 @@ export const Header: React.FC = () => {
     } else {
       return (
         <Link to="/login">
-          <Button title="Вход" />
+          <Button title="Вход" onClick={() => setIsOpenMobileHeader(false)} />
         </Link>
       );
     }
