@@ -1,38 +1,68 @@
 .containerProfilePage {
   display: flex;
   width: 100%;
+  color: #610a0a;
 }
 
 .containerFirstBlock {
-  width: 15%;
-  background: cornflowerblue;
+  width: 16%;
+  padding: 50px 0 0 60px;
 
   img {
     background: #610a0a;
     width: 250px;
     height: 250px;
+    border-radius: 5px;
+  }
+
+  button {
+    margin-top: 26px;
   }
 }
 
 .containerSecondBlock {
+  padding: 20px 0;
   min-width: 50%;
-  background: #8bed64;
+
+  p {
+    margin: 30px 0;
+  }
+
+  .name {
+    font-size: 19px;
+  }
 }
 
 .containerInformationBlocks {
   display: flex;
   flex-direction: row;
   gap: 37px;
-  min-width: 210px;
   min-height: 200px;
 }
 
 .infoBlock {
   padding: 10px;
-  background: #F4DFCB;
+  background: #f4dfcb;
+  min-width: 210px;
+  border-radius: 5px;
+  & > p {
+    margin: 0;
+  }
 }
 
-.marker img{
+.lightText {
+  color: #a75454;
+}
+
+.cardList {
+  padding: 0 0 0 19px;
+
+  li::marker {
+    font-size: 20px;
+  }
+}
+
+.marker img {
   width: 25px;
   height: 25px;
   border-radius: 50%;

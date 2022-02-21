@@ -49,3 +49,20 @@ export const getProfileInfo = async () => {
 
   return data;
 };
+
+// export const getAddresses = async ({latLng}:any) => { // need billing
+//   const lat = `53.95,30.33`
+//   const latlngs = encodeURIComponent(latLng)
+//   const key = 'AIzaSyC3u8u23ct68CEAxVm984B5h2lyFmJgH64'
+//   const url = `https://maps.googleapis.com/maps/api/geocode/json?key=${key}&region=RU&language=ru&latlng=${lat}&location_type=ROOFTOP&result_type=street_address`
+//
+//   const response = await fetch(url).catch(() =>
+//     Promise.reject(new Error("Error fetching data"))
+//   );
+//
+//   const json = await response.json().catch(() => {
+//     return Promise.reject(new Error("Error parsing server response"));
+//   });
+//
+//   console.log(json)
+// }

@@ -1,4 +1,4 @@
-import { initialStateType, payloadProfile } from './types';
+import { initialStateType, profileData } from './typesProfile';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { thunkGetProfile } from './thunks';
 
@@ -9,12 +9,25 @@ const initialState: initialStateType = {
     last_name: '',
     middle_name: '',
     gender: 'женщина',
-    ability: '',
-    mother: 'Елена',
-    father: 'Сергей',
+    abilities: [],
+    mother: {
+      first_name: '',
+      last_name: '',
+      middle_name: '',
+      photo: '',
+      uuid: '',
+    },
+    father: {
+      first_name: '',
+      last_name: '',
+      middle_name: '',
+      photo: '',
+      uuid: '',
+    },
     dob: '12.12.2000',
     dod: '',
-    location: { latitude: '', longitude: '' },
+    location: { latitude: 53.95, longitude: 30.33 },
+    wishes: [],
   },
   loading: false,
 };
@@ -33,7 +46,7 @@ export const MainReducer = createSlice({
     //for thunk!
     [thunkGetProfile.fulfilled.type]: (
       state,
-      action: PayloadAction<payloadProfile>,
+      action: PayloadAction<profileData>,
     ) => {
       state.profile = action.payload;
     },

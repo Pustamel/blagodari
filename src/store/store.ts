@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { MainReducer } from './state';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux';
-import { ThunkAction } from './types';
+import { ThunkAction } from './commonTypes';
 
 export const store = configureStore({
   reducer: {
