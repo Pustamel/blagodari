@@ -7,6 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import { Marker } from './Marker';
 import classNames from 'classnames';
 import { useWindowDimensions } from '../../utils/functions';
+import { Link } from "react-router-dom"
 
 export const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -106,12 +107,13 @@ export const ProfilePage: React.FC = () => {
           alt=""
         />
         {width < 640 && <div>{informationLayout}</div>}
-
-        <Button
-          className={styles.btn}
-          title="Редактировать профиль"
-          onClick={() => ''}
-        />
+        <Link to={'/editProfile'}>
+          <Button
+            className={styles.btn}
+            title="Редактировать профиль"
+            onClick={() => ''}
+          />
+        </Link>
       </div>
 
       <div className={styles.containerSecondBlock}>
