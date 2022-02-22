@@ -7,7 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import { Marker } from './Marker';
 import classNames from 'classnames';
 import { useWindowDimensions } from '../../utils/functions';
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom';
 
 export const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();

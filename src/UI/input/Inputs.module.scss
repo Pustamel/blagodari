@@ -1,6 +1,14 @@
 * {
   font-size: 16px;
+  box-sizing: border-box;
 }
+//COMMON
+.customInput,
+.customSelect {
+  display: flex;
+  flex-direction: column;
+}
+
 .editLabel {
   color: #610a0a;
   margin-left: 5px;
@@ -20,14 +28,37 @@
     color: #f4dfcb;
   }
 }
+//INPUT
+.smallInput {
+  min-width: 263px;
+}
 
+.middle {
+  min-width: 349px;
+}
+
+.big {
+  min-width: 779px;
+}
+
+.withSettings {
+  background: transparent url('../../assets/icons/points.svg') no-repeat;
+  background-position-x: 96%;
+  background-position-y: 11px;
+}
+
+.withSettings:hover {
+  cursor: pointer;
+}
+
+//SELECT
 .select {
   min-width: 263px;
   cursor: pointer;
 }
 
 .select {
-  background: transparent url('arrow-down.svg') no-repeat;
+  background: transparent url('../../assets/icons/arrow-down.svg') no-repeat;
   background-position-x: 96%;
   background-position-y: 14px;
   -moz-appearance: none;

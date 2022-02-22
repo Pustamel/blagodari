@@ -7,7 +7,7 @@ import { LoginPage } from './pages/loginPage/LoginPage';
 import { MapPage } from './pages/MapPage';
 import { ProfilePage } from './pages/profilePage/ProfilePage';
 import styles from './App.module.scss';
-import { EditProfile } from "./pages/editProfile/EditPofile"
+import { EditProfile } from './pages/editProfile/EditPofile';
 
 function App() {
   return (

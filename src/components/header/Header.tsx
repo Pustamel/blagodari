@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 import {
@@ -37,6 +37,8 @@ export const Header: React.FC = () => {
   const closeNavMobile = () => {
     setIsOpenMobileHeader(false);
   };
+  /*eslint @typescript-eslint/no-empty-function: 0*/
+  useEffect(() => {}, [getCookie('tokenAuth'), isAuth]);
 
   return (
     <div className={styles.container}>
