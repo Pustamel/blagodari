@@ -37,7 +37,7 @@ export const LoginPage: React.FC = () => {
         usePic={false}
         cornerRadius={20}
         onAuthCallback={user => {
-          authTelegram(user);
+          authTelegram(user).then(() => dispatch(setAuth(true)));
         }}
         requestAccess="write"
         isDisable={!isAccept}
