@@ -20,24 +20,19 @@
   padding: 50px 0 0 60px;
   box-sizing: border-box;
 
-  img {
-    background: #610a0a;
-    width: 250px;
-    height: 250px;
-    border-radius: 5px;
-  }
-
   button {
     margin-top: 26px;
   }
+
   @media (max-width: 1100px) {
     padding: 50px 5px 0 30px;
   }
   @media (max-width: 780px) {
-    img {
-      width: 200px;
-      height: 200px;
-    }
+    //.avatar,
+    //.containerAvatar::before {
+    //  width: 200px;
+    //  height: 200px;
+    //}
     padding: 50px 5px 0 5px;
   }
 
@@ -52,11 +47,61 @@
   }
 }
 
+.editModeBlock {
+  display: flex;
+  margin: 20px 0;
+  gap: 30px;
+
+  .buttonOk {
+    background: #ffeede;
+  }
+
+  @media (max-width: 640px) {
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+}
+
 .containerSecondBlock {
-  padding: 20px 10px 20px 0;
+  padding: 30px 10px 20px 0;
   overflow: hidden;
+
   p {
-    margin: 30px 0;
+    margin: 15px 0;
+  }
+
+  .withEdit,
+  .infoBlockEdit {
+    display: flex;
+    gap: 50px;
+  }
+
+  .withEdit {
+    align-items: center;
+  }
+
+  .infoBlockEdit {
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 0;
+
+    .buttonOk {
+      background: white;
+    }
+  }
+
+  .editIcon {
+    display: none;
+    width: 24px;
+    height: 24px;
+    @media (max-width: 740px) {
+      display: block;
+    }
+  }
+
+  .infoBlockEdit:hover .editIcon,
+  .withEdit:hover .editIcon {
+    display: block;
   }
 
   .name {
@@ -65,6 +110,14 @@
 
   @media (max-width: 640px) {
     padding: 0 10px 20px 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .withEdit {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
   }
 }
 
@@ -96,23 +149,38 @@
   min-height: 200px;
   border-radius: 5px;
   box-sizing: border-box;
-  & > p {
+
+  & > div > p {
     margin: 0;
   }
+
   @media (max-width: 780px) {
     min-width: 150px;
   }
 }
 
+.contactsBlock {
+  min-width: 300px;
+}
+
 .lightText {
   color: #a75454;
+  margin-left: 5px;
 }
 
 .cardList {
   padding: 0 0 0 19px;
+
   li::marker {
     font-size: 20px;
   }
+}
+
+.inModal {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  gap: 10px;
 }
 
 .marker img {

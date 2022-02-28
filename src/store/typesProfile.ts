@@ -11,9 +11,7 @@ interface locationType {
 
 export interface profileData {
   photo: string;
-  first_name: string;
-  last_name: string;
-  middle_name: string;
+  name: string;
   gender: string | null;
   abilities: Array<abilitiesAndWishesType>;
   mother: parentType | null;
@@ -24,17 +22,20 @@ export interface profileData {
   wishes: Array<abilitiesAndWishesType>;
 }
 
-interface abilitiesAndWishesType {
+export interface abilitiesAndWishesType {
   text: string;
   uuid: string;
   last_edit: number;
 }
 
 interface parentType {
-  first_name: string;
-  last_name: string;
-  middle_name: string;
+  name: string;
   uuid: string;
   photo: string;
   location?: locationType;
+}
+
+export interface propsProfileField {
+  field: string;
+  data: any;
 }

@@ -1,4 +1,9 @@
-import { getProfileInfo } from '../api/api';
+import {
+  addAbility,
+  addWishes,
+  changeDataProfile,
+  getProfileInfo,
+} from '../api/api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const thunkGetProfile = createAsyncThunk(
@@ -6,29 +11,13 @@ export const thunkGetProfile = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await getProfileInfo();
-      const getParent = (field: string) => {
-        return {
-          first_name: response[field].first_name,
-          last_name: response[field].last_name,
-          middle_name: response[field].middle_name,
-          uuid: response[field].uuid,
-          photo: response[field].photo,
-          location: {
-            latitude: response[field].latitude,
-            longitude: response[field].longitude,
-          },
-        };
-      };
-
       return {
         photo: response.photo,
-        first_name: response.first_name,
-        last_name: response.last_name,
-        middle_name: response.middle_name,
+        name: response.first_name,
         gender: response.gender,
         abilities: response.abilities,
-        mother: getParent('mother'),
-        father: getParent('father'),
+        mother: response.mother,
+        father: response.father,
         dob: response.dob,
         dod: response.dod,
         location: {
@@ -39,6 +28,61 @@ export const thunkGetProfile = createAsyncThunk(
       };
     } catch (e) {
       return thunkAPI.rejectWithValue('Не удалось загрузить профиль');
+    }
+  },
+);
+
+interface propsChangeProfile {
+  field: string;
+  data: any;
+}
+
+export const thunkChangeProfile = createAsyncThunk(
+  'updateProfile',
+  async (props: propsChangeProfile, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      console.log('props:', props);
+      const response = await changeDataProfile(props.field, props.data);
+      fulfillWithValue(response);
+    } catch (error) {
+      return rejectWithValue('Не удалось обновить профиль');
+    }
+  },
+);
+
+interface propsAddWishAndAbility {
+  field: string;
+  data: {
+    text: string;
+    last_edit: number;
+  };
+}
+
+export const thunkAddWish = createAsyncThunk(
+  'addWish',
+  async (
+    props: propsAddWishAndAbility,
+    { rejectWithValue, fulfillWithValue },
+  ) => {
+    try {
+      const response = await addWishes(props.data.text, props.data.last_edit);
+      fulfillWithValue(response);
+    } catch (error) {
+      return rejectWithValue('Не удалось обновить профиль');
+    }
+  },
+);
+export const thunkAddAbility = createAsyncThunk(
+  'addAbility',
+  async (
+    props: propsAddWishAndAbility,
+    { rejectWithValue, fulfillWithValue },
+  ) => {
+    try {
+      const response = await addAbility(props.data.text, props.data.last_edit);
+      fulfillWithValue(response);
+    } catch (error) {
+      return rejectWithValue('Не удалось обновить профиль');
     }
   },
 );

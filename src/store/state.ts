@@ -1,31 +1,29 @@
-import { initialStateType, profileData } from './typesProfile';
+import {
+  initialStateType,
+  profileData,
+  propsProfileField,
+} from './typesProfile';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { thunkGetProfile } from './thunks';
 
 const initialState: initialStateType = {
   profile: {
     photo: '',
-    first_name: '',
-    last_name: '',
-    middle_name: '',
+    name: 'name',
     gender: 'женщина',
     abilities: [],
     mother: {
-      first_name: '',
-      last_name: '',
-      middle_name: '',
+      name: '',
       photo: '',
       uuid: '',
     },
     father: {
-      first_name: '',
-      last_name: '',
-      middle_name: '',
+      name: '',
       photo: '',
       uuid: '',
     },
     dob: '12.12.2000',
-    dod: '',
+    dod: null,
     location: { latitude: 53.95, longitude: 30.33 },
     wishes: [],
   },
@@ -33,8 +31,18 @@ const initialState: initialStateType = {
   auth: false,
 };
 
+const changeFieldProfile = (
+  state: any,
+  action: { payload: propsProfileField },
+) => {
+  console.log(action.payload);
+  const field = action.payload.field;
+  state.profile[field] = action.payload.data;
+  // thunkChangeProfile();
+};
+
 export const MainReducer = createSlice({
-  name: 'test',
+  name: 'profile',
   initialState,
   reducers: {
     //for simple action
@@ -45,6 +53,7 @@ export const MainReducer = createSlice({
     setAuth: (state, action) => {
       state.auth = action.payload;
     },
+    changeProfileField: changeFieldProfile,
   },
   extraReducers: {
     //for thunk!
@@ -62,6 +71,9 @@ export const MainReducer = createSlice({
       // example for error
       state.loading = false;
     },
+    // [thunkChangeProfile.fulfilled.type]: (state, action) => {
+    //   console.log(action)
+    // }
   },
 });
 
@@ -74,4 +86,4 @@ export const testFnction = () => {
 
 testFnction();
 
-export const { getProfile, setAuth } = MainReducer.actions;
+export const { setAuth } = MainReducer.actions;

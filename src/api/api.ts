@@ -6,10 +6,12 @@ const instance = axios.create({
   baseURL: 'https://api.blagoroda.org/api/',
 });
 
+const token = process.env.REACT_APP_TG_TOKEN;
+
 // const token =
-//   getCookie('tokenAuth') !== null && getCookie('tokenAuth') !== undefined
-//     ? getCookie('tokenAuth')
-//     : '';
+// getCookie('tokenAuth') !== null && getCookie('tokenAuth') !== undefined
+//   ? getCookie('tokenAuth')
+//   : '';
 
 const user_uuid =
   getCookie('uuid') !== null && getCookie('uuid') !== undefined
@@ -50,7 +52,8 @@ export const getProfileInfo = async () => {
   return data;
 };
 
-// export const getAddresses = async ({latLng}:any) => { // need billing
+// NEED BILLING
+// export const getAddresses = async ({latLng}:any) => {
 //   const lat = `53.95,30.33`
 //   const latlngs = encodeURIComponent(latLng)
 //   const key = 'AIzaSyC3u8u23ct68CEAxVm984B5h2lyFmJgH64'
@@ -66,3 +69,48 @@ export const getProfileInfo = async () => {
 //
 //   console.log(json)
 // }
+// {tg_token: '???', uuid: 'uuid user', first_name: 'name + last_Name + middle_Name', photo: 'base64 encoded', gender: 'm/f',
+// latitude: '', longitude: '', is_notified: '1 / ""', dob: '', dod: 'дд.мм.ггг, мм.гггг, гггг', photo
+
+export const changeDataProfile = async (
+  field?: string,
+  data?: string | Blob,
+) => {
+  const formData = new FormData();
+  const headers = {
+    'Content-Type': 'multipart/form-data',
+    Authorization: `Token ${getCookie('tokenAuth')}`,
+  };
+
+  formData.append('uuid', `${user_uuid}`);
+  formData.append('tg_token', `${token}`);
+  formData.append(`${field}`, `${data}`);
+
+  const response = await instance.put('profile', formData, { headers });
+
+  return response.data;
+};
+
+export const addWishes = async (text: string, last_edit: number) => {
+  const headers = {
+    Authorization: `Token ${getCookie('tokenAuth')}`,
+  };
+  const data = {
+    text: text,
+    last_edit: last_edit,
+  };
+  const response = await instance.post('addorupdatewish', data, { headers });
+  return response.data;
+};
+
+export const addAbility = async (text: string, last_edit: number) => {
+  const headers = {
+    Authorization: `Token ${getCookie('tokenAuth')}`,
+  };
+  const data = {
+    text: text,
+    last_edit: last_edit,
+  };
+  const response = await instance.post('addorupdateability', data, { headers });
+  return response.data;
+};

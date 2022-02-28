@@ -1,169 +1,272 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './ProfilePage.module.scss';
 import { Button } from '../../UI/button/Button';
-import { thunkGetProfile } from '../../store/thunks';
+import {
+  thunkAddAbility,
+  thunkAddWish,
+  thunkChangeProfile,
+  thunkGetProfile,
+} from '../../store/thunks';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import GoogleMapReact from 'google-map-react';
-import { Marker } from './Marker';
 import classNames from 'classnames';
-import { useWindowDimensions } from '../../utils/functions';
-import { Link } from 'react-router-dom';
+import { nowDate, useWindowDimensions } from '../../utils/functions';
+import { Map } from '../../components/map/Map';
+import editIcon from '../../assets/icons/edit.svg';
+import { CustomInput } from '../../UI/input/CustomInput';
+import { InformationLayout } from './InformationLayout';
+import { Modal } from '../../UI/modal/Modal';
+import { BlocksList } from '../../components/blocksList/BlocksList';
+import { ChangePhoto } from './ChangePhoto/ChangePhoto';
 
 export const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector(state => state.MainReducer.profile);
-  const [widthMap, setWidthMap] = useState<string>('50%');
+  const [editMode, setEditMode] = useState<string>('');
+  const [isOpenModal, setOpenModal] = useState<boolean>(false);
+  const [valueInput, setValueInput] = useState<string>('');
 
   useEffect(() => {
     dispatch(thunkGetProfile());
   }, []);
 
-  const center = {
-    lat: 53.95,
-    lng: 30.33,
-  };
+  console.log('state:', state);
 
-  const getCenter = () => {
-    if (state.location) {
-      if (
-        state.location.latitude !== null &&
-        state.location.longitude !== null
-      ) {
-        center.lat = state.location.latitude;
-        center.lng = state.location.longitude;
+  let timer: NodeJS.Timeout;
+  const onChangeInput = useCallback((event: any, field: string | undefined) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      if (field !== '' && field !== undefined) {
+        dispatch(
+          thunkChangeProfile({ field: field, data: event.target.value }),
+        );
       }
-    }
-  };
-
-  useEffect(() => {
-    getCenter();
+    }, 1000);
   }, []);
-
-  const defaultPropsMap = {
-    center: center,
-    zoom: 11,
-  };
 
   const { width } = useWindowDimensions();
 
-  const informationLayout = (
-    <>
-      <p>
-        Пол:{' '}
-        <span className={styles.lightText}>
-          {state.gender === 'm' ? 'мужчина' : 'женщина'}
-        </span>
-      </p>
-      <span>
-        <p>
-          Дата рождения:
-          <span className={styles.lightText}>
-            {state.dob === null ? '―' : state.dob}
-          </span>
-        </p>
-        <p>
-          Дата смерти:
-          <span className={styles.lightText}>
-            {state.dod === null ? '―' : state.dod}
-          </span>
-        </p>
-      </span>
-      <span>
-        <p>
-          Отец:{' '}
-          <span className={styles.lightText}>
-            {state.father?.first_name} {state.father?.last_name}{' '}
-            {state.father?.middle_name}
-          </span>
-        </p>
-        <p>
-          Мать:{' '}
-          <span className={styles.lightText}>
-            {state.mother?.first_name} {state.mother?.last_name}{' '}
-            {state.mother?.middle_name}
-          </span>
-        </p>
-      </span>
-    </>
-  );
+  const changeEditMode = (field: string) => {
+    setOpenModal(true);
+    setEditMode(field);
+  };
 
-  useEffect(() => {
-    if (width <= 1100) {
-      setWidthMap('100%');
-    } else if (width < 1200) {
-      setWidthMap('90%');
+  const onClickButtonInModal = (field: string) => {
+    setOpenModal(false);
+    const data = { text: valueInput, last_edit: nowDate() };
+    if (field === 'wishes') {
+      dispatch(thunkAddWish({ field: field, data }));
     }
-  }, [width]);
+    if (field === 'ability') {
+      dispatch(thunkAddAbility({ field: field, data }));
+    }
+    setValueInput('');
+  };
+
+  const editModeLayout = ({
+    placeholder,
+    defaultValue,
+    field,
+  }: {
+    placeholder?: string;
+    defaultValue?: string;
+    field?: string;
+  }) => {
+    return (
+      <div className={styles.editModeBlock}>
+        <CustomInput
+          onChange={(event: any) =>
+            field !== 'mother' &&
+            field !== 'father' &&
+            onChangeInput(event, field)
+          }
+          defaultValue={defaultValue}
+          placeholder={placeholder}
+        />
+        <Button
+          className={styles.buttonOk}
+          onClick={() => changeEditMode('')}
+          title="OK"
+        />
+      </div>
+    );
+  };
 
   return (
     <div className={styles.containerProfilePage}>
       <div className={styles.containerFirstBlock}>
-        <img
-          src={
-            state.photo !== ''
-              ? state.photo
-              : 'https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png'
-          }
-          alt=""
-        />
-        {width < 640 && <div>{informationLayout}</div>}
-        <Link to={'/editProfile'}>
-          <Button
-            className={styles.btn}
-            title="Редактировать профиль"
-            onClick={() => ''}
-          />
-        </Link>
+        <ChangePhoto />
+
+        {/*MOBILE INFORMATION*/}
+        {width < 640 && (
+          <div>
+            <InformationLayout
+              changeEditMode={changeEditMode}
+              editMode={editMode}
+              editModeLayout={editModeLayout}
+              onChangeInput={onChangeInput}
+            />
+          </div>
+        )}
       </div>
 
+      {/*NAME*/}
       <div className={styles.containerSecondBlock}>
-        <p className={styles.name}>
-          {state.first_name} {state.last_name} {state.middle_name}
-        </p>
+        <div className={styles.withEdit}>
+          {editMode === 'name' ? (
+            editModeLayout({
+              placeholder: 'ФИО',
+              defaultValue: state.name,
+              field: 'first_name',
+            })
+          ) : (
+            <>
+              <p className={styles.name}>{state.name}</p>
+              <img
+                onClick={() => changeEditMode('name')}
+                className={styles.editIcon}
+                src={editIcon}
+                alt=""
+              />
+            </>
+          )}
+        </div>
 
+        {/*ABILITIES*/}
         <div className={styles.containerInformationBlocks}>
           <div className={styles.infoBlock}>
-            <p>Возможности</p>
-            <ul className={classNames(styles.lightText, styles.cardList)}>
-              {state.abilities.map(item => {
-                return <li key={item.uuid}>{item.text}</li>;
-              })}
-            </ul>
+            <div className={styles.infoBlockEdit}>
+              {isOpenModal && editMode === 'abilities' && (
+                <Modal>
+                  <>
+                    <div className={styles.inModal}>
+                      <CustomInput
+                        onChange={event => setValueInput(event.target.value)}
+                        label="Добавить возможность"
+                      />
+                      <Button
+                        onClick={() => onClickButtonInModal('ability')}
+                        title="OK"
+                      />
+                    </div>
+                    <BlocksList list={state.abilities} />
+                  </>
+                </Modal>
+              )}
+              <>
+                <div className={styles.withEdit}>
+                  <p>Возможности</p>
+                  <img
+                    onClick={() => changeEditMode('abilities')}
+                    className={styles.editIcon}
+                    src={editIcon}
+                    alt=""
+                  />
+                </div>
+                <ul className={classNames(styles.lightText, styles.cardList)}>
+                  {state.abilities.map(item => {
+                    return <li key={item.uuid}>{item.text}</li>;
+                  })}
+                </ul>
+              </>
+            </div>
           </div>
+
+          {/*WISHES*/}
           <div className={styles.infoBlock}>
-            <p>Потребности</p>
-            <ul className={classNames(styles.lightText, styles.cardList)}>
-              {state.wishes.map(item => {
-                return <li key={item.uuid}>{item.text}</li>;
-              })}
-            </ul>
+            <div className={styles.infoBlockEdit}>
+              {isOpenModal && editMode === 'wishes' && (
+                <Modal>
+                  <>
+                    <div className={styles.inModal}>
+                      <CustomInput
+                        onChange={event => setValueInput(event.target.value)}
+                        label="Добавить потребности"
+                      />
+                      <Button
+                        onClick={() => onClickButtonInModal('wishes')}
+                        title="OK"
+                      />
+                    </div>
+                    <BlocksList list={state.wishes} />
+                  </>
+                </Modal>
+              )}
+              <div className={styles.withEdit}>
+                <p>Потребности</p>
+                <img
+                  onClick={() => changeEditMode('wishes')}
+                  className={styles.editIcon}
+                  src={editIcon}
+                  alt=""
+                />
+              </div>
+              <ul className={classNames(styles.lightText, styles.cardList)}>
+                {state.wishes.map(item => {
+                  return <li key={item.uuid}>{item.text}</li>;
+                })}
+              </ul>
+            </div>
           </div>
-          <div className={styles.infoBlock}>
-            <p>Контакты</p>
-            <p className={styles.lightText}>Отсутствуют</p>
+
+          {/*CONTACTS*/}
+          <div className={classNames(styles.infoBlock, styles.contactsBlock)}>
+            <div className={styles.infoBlockEdit}>
+              {isOpenModal && editMode === 'contacts' && (
+                <Modal>
+                  <>
+                    <div className={styles.inModal}>
+                      <CustomInput label="Добавить потребности" />
+                      <Button onClick={() => changeEditMode('')} title="OK" />
+                    </div>
+                    <BlocksList list={state.wishes} />
+                  </>
+                </Modal>
+              )}
+              <div className={styles.withEdit}>
+                <p>Контакты</p>
+                <img
+                  onClick={() => changeEditMode('contacts')}
+                  className={styles.editIcon}
+                  src={editIcon}
+                  alt=""
+                />
+              </div>
+              <p className={styles.lightText}>Отсутствуют</p>
+            </div>
           </div>
         </div>
 
         {/*DESKTOP INFORMATION*/}
-        {width > 640 && <>{informationLayout}</>}
+        {width > 640 && (
+          <InformationLayout
+            onChangeInput={onChangeInput}
+            changeEditMode={changeEditMode}
+            editMode={editMode}
+            editModeLayout={editModeLayout}
+          />
+        )}
+        {editMode === 'address' ? (
+          <>{editModeLayout({ field: 'address' })}</>
+        ) : (
+          <>
+            <div className={styles.withEdit}>
+              <p>
+                Местоположение:
+                <span className={styles.lightText}> need reverse geocode </span>
+              </p>
+              <img
+                onClick={() => changeEditMode('address')}
+                className={styles.editIcon}
+                src={editIcon}
+                alt=""
+              />
+            </div>
+          </>
+        )}
 
-        <p>
-          Местоположение:
-          <span className={styles.lightText}> need reverse geocode </span>
-        </p>
+        {/*MAP*/}
         <div>
-          <div style={{ height: '70vh', width: widthMap }}>
-            <GoogleMapReact
-              bootstrapURLKeys={{
-                key: 'AIzaSyC3u8u23ct68CEAxVm984B5h2lyFmJgH64&region=RU&language=ru',
-              }}
-              defaultCenter={defaultPropsMap.center}
-              defaultZoom={defaultPropsMap.zoom}
-              yesIWantToUseGoogleMapApiInternals
-            >
-              <Marker src={state.photo} lat={center.lat} lng={center.lng} />
-            </GoogleMapReact>
-          </div>
+          <Map />
         </div>
       </div>
     </div>

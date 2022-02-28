@@ -1,12 +1,8 @@
 import styles from './BlockList.module.scss';
+import { abilitiesAndWishesType } from '../../store/typesProfile';
 
 interface blocksListTypes {
-  list: listTypes[];
-}
-
-interface listTypes {
-  text: string;
-  id: string | number;
+  list: abilitiesAndWishesType[];
 }
 
 export const BlocksList = ({ list }: blocksListTypes) => {
@@ -14,7 +10,7 @@ export const BlocksList = ({ list }: blocksListTypes) => {
     <div className={styles.blockList}>
       {list.map(item => {
         return (
-          <div className={styles.itemBlock} key={item.id}>
+          <div className={styles.itemBlock} key={item.uuid}>
             {item.text}
           </div>
         );
