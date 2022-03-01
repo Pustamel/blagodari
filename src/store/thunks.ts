@@ -1,29 +1,33 @@
 import {
   addAbility,
+  addProfileParent,
   addWishes,
   changeDataProfile,
   getProfileInfo,
 } from '../api/api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { parent } from './thunkTypes';
+
+interface getProfileProps {
+  uuid: string;
+}
 
 export const thunkGetProfile = createAsyncThunk(
   'getProfile/me',
-  async (_, thunkAPI) => {
+  async (props: getProfileProps, thunkAPI) => {
     try {
-      const response = await getProfileInfo();
+      const response = await getProfileInfo(props.uuid);
       return {
         photo: response.photo,
         name: response.first_name,
         gender: response.gender,
         abilities: response.abilities,
-        mother: response.mother,
-        father: response.father,
+        mother: response?.mother,
+        father: response?.father,
         dob: response.dob,
         dod: response.dod,
-        location: {
-          latitude: response.latitude,
-          longitude: response.longitude,
-        },
+        latitude: response.latitude,
+        longitude: response.longitude,
         wishes: response.wishes,
       };
     } catch (e) {
@@ -41,7 +45,6 @@ export const thunkChangeProfile = createAsyncThunk(
   'updateProfile',
   async (props: propsChangeProfile, { rejectWithValue, fulfillWithValue }) => {
     try {
-      console.log('props:', props);
       const response = await changeDataProfile(props.field, props.data);
       fulfillWithValue(response);
     } catch (error) {
@@ -72,6 +75,7 @@ export const thunkAddWish = createAsyncThunk(
     }
   },
 );
+
 export const thunkAddAbility = createAsyncThunk(
   'addAbility',
   async (
@@ -80,6 +84,30 @@ export const thunkAddAbility = createAsyncThunk(
   ) => {
     try {
       const response = await addAbility(props.data.text, props.data.last_edit);
+      fulfillWithValue(response);
+    } catch (error) {
+      return rejectWithValue('Не удалось обновить профиль');
+    }
+  },
+);
+
+export const thunkAddParent = createAsyncThunk(
+  'addParent',
+  async (props: parent, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const parentObject = {
+        name: props.data.name,
+        photo: props.data.photo !== undefined ? props.data.photo : '',
+        dod: props.data.dod !== undefined ? props.data.dod : '',
+        dob: props.data.dob !== undefined ? props.data.dob : '',
+        gender: props.data.gender !== undefined ? props.data.gender : '',
+        latitude: props.data.latitude !== undefined ? props.data.latitude : '',
+        longitude:
+          props.data.longitude !== undefined ? props.data.longitude : '',
+      };
+      const response = await addProfileParent(props.field, {
+        data: parentObject,
+      });
       fulfillWithValue(response);
     } catch (error) {
       return rejectWithValue('Не удалось обновить профиль');

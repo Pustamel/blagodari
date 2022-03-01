@@ -19,14 +19,12 @@ export const Map = ({ defaultWidth = '50%' }: mapTypes) => {
   };
 
   const getCenter = () => {
-    if (state.location) {
-      if (
-        state.location.latitude !== null &&
-        state.location.longitude !== null
-      ) {
-        center.lat = state.location.latitude;
-        center.lng = state.location.longitude;
-      }
+    if (
+      typeof state.latitude === 'number' &&
+      typeof state.longitude === 'number'
+    ) {
+      center.lat = state.latitude;
+      center.lng = state.longitude;
     }
   };
 

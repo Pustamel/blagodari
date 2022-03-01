@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Connection, User } from '../types/types';
 import { getCookie } from '../utils/functions';
+import { parent } from '../store/thunkTypes';
 
 const instance = axios.create({
   baseURL: 'https://api.blagoroda.org/api/',
@@ -45,9 +46,11 @@ export const authTelegram = async (user: object) => {
   return data;
 };
 
-export const getProfileInfo = async () => {
-  const headers = { 'Content-Type': 'application/json' };
-  const { data } = await instance.get(`profile?uuid=${user_uuid}`, { headers });
+export const getProfileInfo = async (uuid: string) => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const { data } = await instance.get(`profile?uuid=${uuid}`, { headers });
 
   return data;
 };
@@ -83,11 +86,10 @@ export const changeDataProfile = async (
   };
 
   formData.append('uuid', `${user_uuid}`);
-  formData.append('tg_token', `${token}`);
+  field === 'photo' && formData.append('tg_token', `${token}`);
   formData.append(`${field}`, `${data}`);
 
   const response = await instance.put('profile', formData, { headers });
-
   return response.data;
 };
 
@@ -113,4 +115,37 @@ export const addAbility = async (text: string, last_edit: number) => {
   };
   const response = await instance.post('addorupdateability', data, { headers });
   return response.data;
+};
+
+export const addProfileParent = async (field?: string, data?: parent) => {
+  const formData = new FormData();
+  const headers = {
+    'Content-Type': 'multipart/form-data',
+    Authorization: `Token ${getCookie('tokenAuth')}`,
+  };
+
+  formData.append('uuid', `${user_uuid}`);
+  formData.append('first_name', `${data?.data.name}`);
+  formData.append('dod', `${data?.data.dod}`);
+  formData.append('dob', `${data?.data.dob}`);
+  formData.append('gender', `${data?.data.gender}`);
+  formData.append('latitude', `${data?.data.latitude}`);
+  formData.append('longitude', `${data?.data.longitude}`);
+  formData.append('photo', `${data?.data.photo}`);
+  formData.append('link_uuid', `${user_uuid}`);
+  formData.append('link_relation', `new_is_${field}`);
+
+  const response = await instance.post('profile', formData, { headers });
+
+  return response.data;
+};
+
+export const getRelative = async () => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${getCookie('tokenAuth')}`,
+  };
+  const { data } = await instance.get(`profile`, { headers });
+
+  return data;
 };

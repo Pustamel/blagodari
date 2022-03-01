@@ -4,11 +4,6 @@ export interface initialStateType {
   auth: boolean;
 }
 
-interface locationType {
-  latitude: number | null;
-  longitude: number | null;
-}
-
 export interface profileData {
   photo: string;
   name: string;
@@ -18,7 +13,8 @@ export interface profileData {
   father: parentType | null;
   dob: string | null;
   dod?: string | null;
-  location?: locationType;
+  latitude: number | string;
+  longitude: number | string;
   wishes: Array<abilitiesAndWishesType>;
 }
 
@@ -30,12 +26,22 @@ export interface abilitiesAndWishesType {
 
 interface parentType {
   name: string;
-  uuid: string;
   photo: string;
-  location?: locationType;
+  uuid: string;
+  dod: string | null;
+  dob: string | null;
+  gender: string;
+  latitude: number | string;
+  longitude: number | string;
 }
 
 export interface propsProfileField {
   field: string;
   data: any;
+}
+
+export interface propsChangeParent {
+  field: string;
+  data: any;
+  typeField: 'father' | 'mother';
 }

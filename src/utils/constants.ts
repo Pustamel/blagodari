@@ -1,4 +1,5 @@
 import styles from '../UI/input/Inputs.module.scss';
+import { getCookie } from './functions';
 
 interface sizesTypes {
   small: string;
@@ -20,3 +21,12 @@ export const testDataList = [
   { text: 'Арт-консультант', id: 5 },
   { text: 'Арт-консультант Арт-консультант', id: 6 },
 ];
+
+export const currentUuid = window.location.pathname.substring(9); // return string with uuid
+export const uuid =
+  currentUuid !== undefined
+    ? currentUuid
+    : getCookie('uuid') !== undefined
+    ? getCookie('uuid')
+    : ' ';
+export const isSelfProfile = getCookie('uuid') === currentUuid;

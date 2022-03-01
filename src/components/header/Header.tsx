@@ -54,7 +54,7 @@ export const Header: React.FC = () => {
           <Link className={styles.link} to="/graph">
             Граф
           </Link>
-          <Link className={styles.link} to="/profile">
+          <Link className={styles.link} to={`/profile/${getCookie('uuid')}`}>
             Профиль
           </Link>
           {authButton()}
@@ -73,7 +73,11 @@ export const Header: React.FC = () => {
           <Link onClick={closeNavMobile} className={styles.link} to="/graph">
             Граф
           </Link>
-          <Link onClick={closeNavMobile} className={styles.link} to="/profile">
+          <Link
+            onClick={closeNavMobile}
+            className={styles.link}
+            to={`/profile/${getCookie('uuid')}`}
+          >
             Профиль
           </Link>
           {authButton()}

@@ -17,6 +17,7 @@ import { InformationLayout } from './InformationLayout';
 import { Modal } from '../../UI/modal/Modal';
 import { BlocksList } from '../../components/blocksList/BlocksList';
 import { ChangePhoto } from './ChangePhoto/ChangePhoto';
+import { isSelfProfile, uuid } from '../../utils/constants';
 
 export const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -26,8 +27,8 @@ export const ProfilePage: React.FC = () => {
   const [valueInput, setValueInput] = useState<string>('');
 
   useEffect(() => {
-    dispatch(thunkGetProfile());
-  }, []);
+    typeof uuid === 'string' && dispatch(thunkGetProfile({ uuid: uuid }));
+  }, [uuid]);
 
   console.log('state:', state);
 
@@ -91,10 +92,24 @@ export const ProfilePage: React.FC = () => {
     );
   };
 
+  //pencil
+  const editImage = (field: string) => {
+    return (
+      isSelfProfile && (
+        <img
+          onClick={() => changeEditMode(field)}
+          className={styles.editIcon}
+          src={editIcon}
+          alt=""
+        />
+      )
+    );
+  };
+
   return (
     <div className={styles.containerProfilePage}>
       <div className={styles.containerFirstBlock}>
-        <ChangePhoto />
+        <ChangePhoto photo={state.photo} />
 
         {/*MOBILE INFORMATION*/}
         {width < 640 && (
@@ -121,12 +136,7 @@ export const ProfilePage: React.FC = () => {
           ) : (
             <>
               <p className={styles.name}>{state.name}</p>
-              <img
-                onClick={() => changeEditMode('name')}
-                className={styles.editIcon}
-                src={editIcon}
-                alt=""
-              />
+              {editImage('name')}
             </>
           )}
         </div>
@@ -136,7 +146,7 @@ export const ProfilePage: React.FC = () => {
           <div className={styles.infoBlock}>
             <div className={styles.infoBlockEdit}>
               {isOpenModal && editMode === 'abilities' && (
-                <Modal>
+                <Modal closeModal={() => onClickButtonInModal('ability')}>
                   <>
                     <div className={styles.inModal}>
                       <CustomInput
@@ -155,12 +165,7 @@ export const ProfilePage: React.FC = () => {
               <>
                 <div className={styles.withEdit}>
                   <p>Возможности</p>
-                  <img
-                    onClick={() => changeEditMode('abilities')}
-                    className={styles.editIcon}
-                    src={editIcon}
-                    alt=""
-                  />
+                  {editImage('abilities')}
                 </div>
                 <ul className={classNames(styles.lightText, styles.cardList)}>
                   {state.abilities.map(item => {
@@ -175,7 +180,7 @@ export const ProfilePage: React.FC = () => {
           <div className={styles.infoBlock}>
             <div className={styles.infoBlockEdit}>
               {isOpenModal && editMode === 'wishes' && (
-                <Modal>
+                <Modal closeModal={() => onClickButtonInModal('wishes')}>
                   <>
                     <div className={styles.inModal}>
                       <CustomInput
@@ -193,12 +198,7 @@ export const ProfilePage: React.FC = () => {
               )}
               <div className={styles.withEdit}>
                 <p>Потребности</p>
-                <img
-                  onClick={() => changeEditMode('wishes')}
-                  className={styles.editIcon}
-                  src={editIcon}
-                  alt=""
-                />
+                {editImage('wishes')}
               </div>
               <ul className={classNames(styles.lightText, styles.cardList)}>
                 {state.wishes.map(item => {
@@ -212,24 +212,19 @@ export const ProfilePage: React.FC = () => {
           <div className={classNames(styles.infoBlock, styles.contactsBlock)}>
             <div className={styles.infoBlockEdit}>
               {isOpenModal && editMode === 'contacts' && (
-                <Modal>
+                <Modal closeModal={() => changeEditMode('')}>
                   <>
                     <div className={styles.inModal}>
-                      <CustomInput label="Добавить потребности" />
+                      <CustomInput label="Добавить контакты" />
                       <Button onClick={() => changeEditMode('')} title="OK" />
                     </div>
-                    <BlocksList list={state.wishes} />
+                    {/*<BlocksList list={state.wishes} />*/}
                   </>
                 </Modal>
               )}
               <div className={styles.withEdit}>
                 <p>Контакты</p>
-                <img
-                  onClick={() => changeEditMode('contacts')}
-                  className={styles.editIcon}
-                  src={editIcon}
-                  alt=""
-                />
+                {editImage('contacts')}
               </div>
               <p className={styles.lightText}>Отсутствуют</p>
             </div>
@@ -254,12 +249,7 @@ export const ProfilePage: React.FC = () => {
                 Местоположение:
                 <span className={styles.lightText}> need reverse geocode </span>
               </p>
-              <img
-                onClick={() => changeEditMode('address')}
-                className={styles.editIcon}
-                src={editIcon}
-                alt=""
-              />
+              {editImage('address')}
             </div>
           </>
         )}

@@ -1,6 +1,7 @@
 import {
   initialStateType,
   profileData,
+  propsChangeParent,
   propsProfileField,
 } from './typesProfile';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -13,18 +14,29 @@ const initialState: initialStateType = {
     gender: 'женщина',
     abilities: [],
     mother: {
+      gender: '',
       name: '',
       photo: '',
       uuid: '',
+      longitude: '',
+      latitude: '',
+      dod: null,
+      dob: null,
     },
     father: {
+      gender: '',
       name: '',
       photo: '',
       uuid: '',
+      longitude: '',
+      latitude: '',
+      dod: null,
+      dob: null,
     },
     dob: '12.12.2000',
     dod: null,
-    location: { latitude: 53.95, longitude: 30.33 },
+    latitude: 53.95,
+    longitude: 30.33,
     wishes: [],
   },
   loading: false,
@@ -35,10 +47,25 @@ const changeFieldProfile = (
   state: any,
   action: { payload: propsProfileField },
 ) => {
-  console.log(action.payload);
   const field = action.payload.field;
   state.profile[field] = action.payload.data;
-  // thunkChangeProfile();
+};
+
+const changeParent = (state: any, action: { payload: propsChangeParent }) => {
+  const field = action.payload.field;
+  const typeField = action.payload.typeField;
+
+  if (typeField === 'mother') {
+    state.profile.mother = {
+      ...state.profile.mother,
+      [field]: action.payload.data,
+    };
+  } else if (typeField === 'father') {
+    state.profile.father = {
+      ...state.profile.mother,
+      [field]: action.payload.data,
+    };
+  }
 };
 
 export const MainReducer = createSlice({
@@ -54,6 +81,7 @@ export const MainReducer = createSlice({
       state.auth = action.payload;
     },
     changeProfileField: changeFieldProfile,
+    changeParentFields: changeParent,
   },
   extraReducers: {
     //for thunk!
@@ -86,4 +114,4 @@ export const testFnction = () => {
 
 testFnction();
 
-export const { setAuth } = MainReducer.actions;
+export const { setAuth, changeParentFields } = MainReducer.actions;

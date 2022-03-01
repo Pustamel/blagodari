@@ -1,18 +1,20 @@
 import styles from './ChangePhoto.module.scss';
 import camera from '../../../assets/icons/camera.svg';
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useAppDispatch } from '../../../store/store';
 import { thunkChangeProfile, thunkGetProfile } from '../../../store/thunks';
 import { toBase64 } from '../../../utils/functions';
+import { uuid } from '../../../utils/constants';
 
-export const ChangePhoto = () => {
+export const ChangePhoto = ({ photo }: { photo?: string }) => {
   const dispatch = useAppDispatch();
-  const state = useAppSelector(state => state.MainReducer.profile);
 
   const onChange = (event: any) => {
     toBase64(event)
       .then(data => dispatch(thunkChangeProfile({ field: 'photo', data })))
-      .then(() => dispatch(thunkGetProfile()));
+      .then(() => {
+        typeof uuid === 'string' && dispatch(thunkGetProfile({ uuid: uuid }));
+      });
   };
 
   return (
@@ -32,8 +34,8 @@ export const ChangePhoto = () => {
           <img
             className={styles.avatar}
             src={
-              state.photo !== ''
-                ? state.photo
+              photo !== ''
+                ? photo
                 : 'https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png'
             }
             alt=""
