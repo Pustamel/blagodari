@@ -25,7 +25,7 @@ export interface abilitiesAndWishesType {
 }
 
 interface parentType {
-  name: string;
+  first_name: string;
   photo: string;
   uuid: string;
   dod: string | null;

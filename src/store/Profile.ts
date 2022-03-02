@@ -3,9 +3,13 @@ import {
   profileData,
   propsChangeParent,
   propsProfileField,
-} from './typesProfile';
+} from './types/typesProfile';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { thunkGetProfile } from './thunks';
+import {
+  thunkChangeFieldParent,
+  thunkChangeProfile,
+  thunkGetProfile,
+} from './thunks';
 
 const initialState: initialStateType = {
   profile: {
@@ -15,7 +19,7 @@ const initialState: initialStateType = {
     abilities: [],
     mother: {
       gender: '',
-      name: '',
+      first_name: '',
       photo: '',
       uuid: '',
       longitude: '',
@@ -25,7 +29,7 @@ const initialState: initialStateType = {
     },
     father: {
       gender: '',
-      name: '',
+      first_name: '',
       photo: '',
       uuid: '',
       longitude: '',
@@ -62,7 +66,7 @@ const changeParent = (state: any, action: { payload: propsChangeParent }) => {
     };
   } else if (typeField === 'father') {
     state.profile.father = {
-      ...state.profile.mother,
+      ...state.profile.father,
       [field]: action.payload.data,
     };
   }
@@ -72,11 +76,6 @@ export const MainReducer = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    //for simple action
-    getProfile: state => {
-      //example
-      return state;
-    },
     setAuth: (state, action) => {
       state.auth = action.payload;
     },
@@ -84,7 +83,6 @@ export const MainReducer = createSlice({
     changeParentFields: changeParent,
   },
   extraReducers: {
-    //for thunk!
     [thunkGetProfile.fulfilled.type]: (
       state,
       action: PayloadAction<profileData>,
@@ -92,26 +90,37 @@ export const MainReducer = createSlice({
       state.profile = action.payload;
     },
     [thunkGetProfile.pending.type]: state => {
-      //example for in process
       state.loading = true;
     },
     [thunkGetProfile.rejected.type]: state => {
-      // example for error
       state.loading = false;
     },
-    // [thunkChangeProfile.fulfilled.type]: (state, action) => {
-    //   console.log(action)
-    // }
+    [thunkChangeProfile.fulfilled.type]: (state, action) => {
+      console.log(action);
+      const field = action.meta.arg.field;
+      const data = action.meta.arg.data;
+      state.profile = {
+        ...state.profile,
+        [field]: data,
+      };
+    },
+    [thunkChangeFieldParent.fulfilled.type]: (state, action) => {
+      const field = action.meta.arg.field;
+      const parent = action.meta.arg.typeField;
+      const data = action.payload;
+      if (parent === 'mother' && state.profile.mother !== null) {
+        state.profile.mother = {
+          ...state.profile.mother,
+          [field]: data[field],
+        };
+      } else if (parent === 'father' && state.profile.father !== null) {
+        state.profile.father = {
+          ...state.profile.father,
+          [field]: data[field],
+        };
+      }
+    },
   },
 });
-
-// current(state) - for see state
-
-export const testFnction = () => {
-  //example simple action
-  MainReducer.actions.getProfile();
-};
-
-testFnction();
 
 export const { setAuth, changeParentFields } = MainReducer.actions;

@@ -3,10 +3,11 @@ import { Checkbox } from '../../UI/input/Checkbox';
 import styles from './LoginPage.module.scss';
 import { TLoginButton, TLoginButtonSize } from '../../api/Telegram';
 import { authTelegram } from '../../api/api';
-import { getCookie } from '../../utils/functions';
+import { delete_cookie, getCookie } from '../../utils/functions';
 import { Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { setAuth } from '../../store/state';
+import { setAuth } from '../../store/Profile';
+import { Button } from '../../UI/button/Button';
 
 export const LoginPage: React.FC = () => {
   const [isAccept, setIsAccept] = useState(false);
@@ -41,6 +42,10 @@ export const LoginPage: React.FC = () => {
         }}
         requestAccess="write"
         isDisable={!isAccept}
+      />
+      <Button
+        title="Войти в другой аккаунт"
+        onClick={() => delete_cookie('stel_token')}
       />
       <div className={styles.acceptTerms}>
         <Checkbox onChange={handleAccept} id="terms" />

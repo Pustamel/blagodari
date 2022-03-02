@@ -3,14 +3,17 @@ import {
   addProfileParent,
   addWishes,
   changeDataProfile,
+  fetchChangeParent,
   getProfileInfo,
 } from '../api/api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { parent } from './thunkTypes';
-
-interface getProfileProps {
-  uuid: string;
-}
+import {
+  getProfileProps,
+  parent,
+  propsAddWishAndAbility,
+  propsChangeFiledParent,
+  propsChangeProfile,
+} from './types/thunkTypes';
 
 export const thunkGetProfile = createAsyncThunk(
   'getProfile/me',
@@ -36,11 +39,6 @@ export const thunkGetProfile = createAsyncThunk(
   },
 );
 
-interface propsChangeProfile {
-  field: string;
-  data: any;
-}
-
 export const thunkChangeProfile = createAsyncThunk(
   'updateProfile',
   async (props: propsChangeProfile, { rejectWithValue, fulfillWithValue }) => {
@@ -52,14 +50,6 @@ export const thunkChangeProfile = createAsyncThunk(
     }
   },
 );
-
-interface propsAddWishAndAbility {
-  field: string;
-  data: {
-    text: string;
-    last_edit: number;
-  };
-}
 
 export const thunkAddWish = createAsyncThunk(
   'addWish',
@@ -96,7 +86,7 @@ export const thunkAddParent = createAsyncThunk(
   async (props: parent, { rejectWithValue, fulfillWithValue }) => {
     try {
       const parentObject = {
-        name: props.data.name,
+        first_name: props.data.first_name,
         photo: props.data.photo !== undefined ? props.data.photo : '',
         dod: props.data.dod !== undefined ? props.data.dod : '',
         dob: props.data.dob !== undefined ? props.data.dob : '',
@@ -109,6 +99,17 @@ export const thunkAddParent = createAsyncThunk(
         data: parentObject,
       });
       fulfillWithValue(response);
+    } catch (error) {
+      return rejectWithValue('Не удалось обновить профиль');
+    }
+  },
+);
+
+export const thunkChangeFieldParent = createAsyncThunk(
+  'changeParent',
+  async (props: propsChangeFiledParent, { rejectWithValue }) => {
+    try {
+      return await fetchChangeParent(props.field, props.data, props.uuid);
     } catch (error) {
       return rejectWithValue('Не удалось обновить профиль');
     }

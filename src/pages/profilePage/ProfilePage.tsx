@@ -16,8 +16,9 @@ import { CustomInput } from '../../UI/input/CustomInput';
 import { InformationLayout } from './InformationLayout';
 import { Modal } from '../../UI/modal/Modal';
 import { BlocksList } from '../../components/blocksList/BlocksList';
-import { ChangePhoto } from './ChangePhoto/ChangePhoto';
-import { isSelfProfile, uuid } from '../../utils/constants';
+import { ChangePhoto } from './changePhoto/ChangePhoto';
+import { isSelfProfile } from '../../utils/constants';
+import { useParams } from 'react-router-dom';
 
 export const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -25,10 +26,12 @@ export const ProfilePage: React.FC = () => {
   const [editMode, setEditMode] = useState<string>('');
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const [valueInput, setValueInput] = useState<string>('');
+  const params = useParams();
 
   useEffect(() => {
-    typeof uuid === 'string' && dispatch(thunkGetProfile({ uuid: uuid }));
-  }, [uuid]);
+    typeof params.profileId === 'string' &&
+      dispatch(thunkGetProfile({ uuid: params.profileId }));
+  }, [params.profileId]);
 
   console.log('state:', state);
 
@@ -40,6 +43,7 @@ export const ProfilePage: React.FC = () => {
         dispatch(
           thunkChangeProfile({ field: field, data: event.target.value }),
         );
+        setEditMode('');
       }
     }, 1000);
   }, []);

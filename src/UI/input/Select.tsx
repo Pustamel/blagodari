@@ -8,6 +8,7 @@ interface selectTypes {
   size?: string;
   onSelect: (event: any, field: string) => void;
   field?: string;
+  defaultValue?: string;
 }
 
 interface listType {
@@ -21,12 +22,13 @@ export const CustomSelect = ({
   size = 'small',
   onSelect,
   field = '',
+  defaultValue,
 }: selectTypes) => {
-
   return (
     <div className={styles.customSelect}>
       {label !== '' ? <p className={styles.editLabel}>{label}</p> : ''}
       <select
+        defaultValue={defaultValue}
         className={classNames(styles.select, (sizes as any)[size])}
         name="customSelect"
         id="1"

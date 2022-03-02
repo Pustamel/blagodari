@@ -7,7 +7,6 @@ import { LoginPage } from './pages/loginPage/LoginPage';
 import { MapPage } from './pages/MapPage';
 import { ProfilePage } from './pages/profilePage/ProfilePage';
 import styles from './App.module.scss';
-import { uuid } from './utils/constants';
 
 function App() {
   return (
@@ -18,7 +17,9 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/graph" element={<GraphPage />} />
-          <Route path={`/profile/${uuid}`} element={<ProfilePage />} />
+          <Route path={'/profile'} element={<ProfilePage />}>
+            <Route path=":profileId" element={<ProfilePage />} />
+          </Route>
           <Route path="/login" element={<LoginPage />} />
         </Routes>
       </BrowserRouter>

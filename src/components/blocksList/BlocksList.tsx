@@ -1,5 +1,5 @@
 import styles from './BlockList.module.scss';
-import { abilitiesAndWishesType } from '../../store/typesProfile';
+import { abilitiesAndWishesType } from '../../store/types/typesProfile';
 
 interface blocksListTypes {
   list: abilitiesAndWishesType[];

@@ -17,6 +17,7 @@ export const Header: React.FC = () => {
   const logout = () => {
     delete_cookie('tokenAuth');
     delete_cookie('uuid');
+    delete_cookie('stel_token');
     setIsAuth(Boolean(getCookie('tokenAuth')));
   };
 

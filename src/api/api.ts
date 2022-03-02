@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Connection, User } from '../types/types';
 import { getCookie } from '../utils/functions';
-import { parent } from '../store/thunkTypes';
+import { parent } from '../store/types/thunkTypes';
 
 const instance = axios.create({
   baseURL: 'https://api.blagoroda.org/api/',
@@ -125,7 +125,7 @@ export const addProfileParent = async (field?: string, data?: parent) => {
   };
 
   formData.append('uuid', `${user_uuid}`);
-  formData.append('first_name', `${data?.data.name}`);
+  formData.append('first_name', `${data?.data.first_name}`);
   formData.append('dod', `${data?.data.dod}`);
   formData.append('dob', `${data?.data.dob}`);
   formData.append('gender', `${data?.data.gender}`);
@@ -133,7 +133,11 @@ export const addProfileParent = async (field?: string, data?: parent) => {
   formData.append('longitude', `${data?.data.longitude}`);
   formData.append('photo', `${data?.data.photo}`);
   formData.append('link_uuid', `${user_uuid}`);
-  formData.append('link_relation', `new_is_${field}`);
+  if (field === 'mother') {
+    formData.append('link_relation', 'new_is_mother');
+  } else {
+    formData.append('link_relation', 'new_is_father');
+  }
 
   const response = await instance.post('profile', formData, { headers });
 
@@ -149,3 +153,52 @@ export const getRelative = async () => {
 
   return data;
 };
+
+export const fetchChangeParent = async (
+  field: string,
+  data: any,
+  uuid: string,
+) => {
+  const formData = new FormData();
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${getCookie('tokenAuth')}`,
+  };
+  formData.append('uuid', `${uuid}`);
+  formData.append(field, `${data}`);
+
+  const response = await instance.put('profile', formData, { headers });
+  return response.data;
+};
+
+export const FetchSearchProfile = async (name: string) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${getCookie('tokenAuth')}`,
+  };
+
+  const response = await instance.get('getstats/user_connections_graph', {
+    headers,
+    params: {
+      query: name,
+      uuid: user_uuid,
+    },
+  });
+  return response.data;
+};
+
+// export const deleteFather = async () => {
+//   const formData = new FormData();
+//   const headers = {
+//     'Content-Type': 'application/json',
+//     Authorization: `Token ${getCookie('tokenAuth')}`,
+//   };
+//
+//   formData.append('uuid', '90258672-a7bf-48f1-a67b-f0db3f34b1b2')
+//
+//   const response = await instance.delete('profile', {
+//     headers,
+//     data: formData
+//   });
+//  return response.data
+// }

@@ -1,0 +1,52 @@
+.interactionParent {
+  box-sizing: border-box;
+  border: 1px solid #a75454;
+  width: 200px;
+  border-radius: 5px;
+  padding: 12px;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  border: none;
+  outline: none;
+  background: none;
+  padding: 5px 0;
+  color: #610a0a;
+  text-align: inherit;
+  cursor: pointer;
+  &:hover {
+    color: #a75454;
+  }
+}
+
+.containerFather {
+  display: grid !important;
+  grid-template-columns: repeat(1, 0fr);
+  grid-template-rows: repeat(2, 0fr);
+  gap: 0 !important;
+}
+
+.edit {
+  grid-column-end: none;
+}
+
+.cross {
+  width: 20px;
+  height: 20px;
+  align-self: end;
+  fill: #a75454;
+  cursor: pointer;
+}
+
+.containerBtnModal {
+  padding: 10px;
+  text-align: center;
+}
+
+.name {
+  min-width: 200px;
+}

@@ -1,24 +1,40 @@
 import { useAppDispatch } from '../../../store/store';
 import styles from './ChangePhoto.module.scss';
 import React from 'react';
-import { changeParentFields } from '../../../store/state';
+import { changeParentFields } from '../../../store/Profile';
 import { toBase64 } from '../../../utils/functions';
+import { thunkChangeFieldParent } from '../../../store/thunks';
 
 export const ChangePhotoParent = ({
   photo,
   parent,
+  uuid,
 }: {
   photo?: string;
   parent: 'mother' | 'father';
+  uuid?: string;
 }) => {
   const dispatch = useAppDispatch();
 
   const onChange = (event: any, typeField: 'mother' | 'father') => {
-    toBase64(event).then(data =>
-      dispatch(
-        changeParentFields({ field: 'photo', typeField: typeField, data }),
-      ),
-    );
+    if (photo !== undefined && uuid !== undefined) {
+      toBase64(event).then(data =>
+        dispatch(
+          thunkChangeFieldParent({
+            field: 'photo',
+            data,
+            uuid: uuid,
+            typeField: parent,
+          }),
+        ),
+      );
+    } else {
+      toBase64(event).then(data =>
+        dispatch(
+          changeParentFields({ field: 'photo', typeField: typeField, data }),
+        ),
+      );
+    }
   };
 
   return (
