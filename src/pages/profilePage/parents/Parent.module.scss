@@ -50,3 +50,38 @@
 .name {
   min-width: 200px;
 }
+
+//SEARCH PARENT
+.inputSearch {
+  margin: 10px 0;
+}
+
+.loader {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.containerProfiles {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 300px;
+  margin-top: 20px;
+}
+
+.searchedProfile {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.profilePhoto {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.noResult {
+  color: #7e7e7e;
+  text-align: center;
+}

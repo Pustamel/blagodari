@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
 interface CheckboxProps {
-  onChange(): void;
-  id?: string;
+  onChange(): void
+  id?: string
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({
@@ -15,5 +15,5 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       <input id={id} onChange={onChange} type="checkbox" />
       {children}
     </label>
-  );
-};
+  )
+}

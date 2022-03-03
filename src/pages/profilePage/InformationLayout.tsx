@@ -1,31 +1,31 @@
-import styles from './ProfilePage.module.scss';
-import editIcon from '../../assets/icons/edit.svg';
-import React, { ReactNode } from 'react';
-import { useAppSelector } from '../../store/store';
-import { CustomSelect } from '../../UI/input/Select';
-import { isSelfProfile } from '../../utils/constants';
-import { Parents } from './parents/Parent';
+import styles from './ProfilePage.module.scss'
+import editIcon from '../../assets/icons/edit.svg'
+import React, { ReactNode } from 'react'
+import { useAppSelector } from '../../store/store'
+import { CustomSelect } from '../../UI/input/Select'
+import { isSelfProfile } from '../../utils/constants'
+import { Parents } from './parents/Parent'
 
 interface propsInfoBlock {
-  editMode: string;
-  changeEditMode: (arg0: string) => void;
-  onChangeInput: (event: any, field: string | undefined) => void;
+  editMode: string
+  changeEditMode: (arg0: string) => void
+  onChangeInput: (event: any, field: string | undefined) => void
   editModeLayout: ({
     placeholder,
     defaultValue,
     field,
   }: {
-    placeholder?: string;
-    defaultValue?: string;
-    field?: string;
-  }) => ReactNode;
+    placeholder?: string
+    defaultValue?: string
+    field?: string
+  }) => ReactNode
 }
 
 const listOfGender = [
   { value: '', id: 'noSelect', text: 'не определено' },
   { value: 'm', id: 'male', text: 'мужской' },
   { value: 'f', id: 'female', text: 'женский' },
-];
+]
 
 // gender, dob, dod
 export const InformationLayout = ({
@@ -34,7 +34,7 @@ export const InformationLayout = ({
   editModeLayout,
   onChangeInput,
 }: propsInfoBlock) => {
-  const state = useAppSelector(state => state.MainReducer.profile);
+  const state = useAppSelector(state => state.MainReducer.profile)
 
   const editImage = (field: string) => {
     return (
@@ -46,8 +46,8 @@ export const InformationLayout = ({
           alt=""
         />
       )
-    );
-  };
+    )
+  }
 
   return (
     <>
@@ -122,5 +122,5 @@ export const InformationLayout = ({
       </div>
       <Parents changeEditMode={changeEditMode} />
     </>
-  );
-};
+  )
+}

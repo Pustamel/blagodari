@@ -1,20 +1,20 @@
-import styles from './Inputs.module.scss';
-import classNames from 'classnames';
-import { sizes } from '../../utils/constants';
+import styles from './Inputs.module.scss'
+import classNames from 'classnames'
+import { sizes } from '../../utils/constants'
 
 interface selectTypes {
-  label?: string;
-  list?: listType[];
-  size?: string;
-  onSelect: (event: any, field: string) => void;
-  field?: string;
-  defaultValue?: string;
+  label?: string
+  list?: listType[]
+  size?: string
+  onSelect: (event: any, field: string) => void
+  field?: string
+  defaultValue?: string
 }
 
 interface listType {
-  value: string;
-  id: string | number;
-  text: string;
+  value: string
+  id: string | number
+  text: string
 }
 export const CustomSelect = ({
   label,
@@ -40,9 +40,9 @@ export const CustomSelect = ({
             <option key={item.id} className={styles.option} value={item.value}>
               {item.text}
             </option>
-          );
+          )
         })}
       </select>
     </div>
-  );
-};
+  )
+}

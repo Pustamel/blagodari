@@ -1,10 +1,10 @@
-import styles from './ProfilePage.module.scss';
-import React from 'react';
+import styles from './ProfilePage.module.scss'
+import React from 'react'
 
 interface propsMarker {
-  lat?: number;
-  lng?: number;
-  src?: string;
+  lat?: number
+  lng?: number
+  src?: string
 }
 
 export const Marker = ({ lat, lng, src }: propsMarker) => {
@@ -19,5 +19,5 @@ export const Marker = ({ lat, lng, src }: propsMarker) => {
         alt={`${lat}` + `${lng}`}
       />
     </div>
-  );
-};
+  )
+}

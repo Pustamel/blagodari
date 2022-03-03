@@ -1,8 +1,8 @@
 export interface User {
-  uuid: string;
+  uuid: string
 }
 
 export interface Connection {
-  source: string;
-  target: string;
+  source: string
+  target: string
 }

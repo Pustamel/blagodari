@@ -1,13 +1,13 @@
-import axios from 'axios';
-import { Connection, User } from '../types/types';
-import { getCookie } from '../utils/functions';
-import { parent } from '../store/types/thunkTypes';
+import axios from 'axios'
+import { Connection, User } from '../types/types'
+import { getCookie } from '../utils/functions'
+import { parent } from '../store/types/thunkTypes'
 
 const instance = axios.create({
   baseURL: 'https://api.blagoroda.org/api/',
-});
+})
 
-const token = process.env.REACT_APP_TG_TOKEN;
+const token = process.env.REACT_APP_TG_TOKEN
 
 // const token =
 // getCookie('tokenAuth') !== null && getCookie('tokenAuth') !== undefined
@@ -17,11 +17,11 @@ const token = process.env.REACT_APP_TG_TOKEN;
 const user_uuid =
   getCookie('uuid') !== null && getCookie('uuid') !== undefined
     ? getCookie('uuid')
-    : '';
+    : ''
 
 export interface FetchUserConnectionsGraph {
-  users: User[];
-  connections: Connection[];
+  users: User[]
+  connections: Connection[]
 }
 
 export const fetchUserConnectionsGraph = async (from = 0, number = 25) => {
@@ -33,27 +33,27 @@ export const fetchUserConnectionsGraph = async (from = 0, number = 25) => {
         number,
       },
     },
-  );
-  return data;
-};
+  )
+  return data
+}
 
 export const authTelegram = async (user: object) => {
-  const body = JSON.stringify(user);
-  const headers = { 'Content-Type': 'application/json' };
-  const { data } = await instance.post('auth/telegram', body, { headers });
-  document.cookie = `tokenAuth=${data.auth_token}`;
-  document.cookie = `uuid=${data.user_uuid}`;
-  return data;
-};
+  const body = JSON.stringify(user)
+  const headers = { 'Content-Type': 'application/json' }
+  const { data } = await instance.post('auth/telegram', body, { headers })
+  document.cookie = `tokenAuth=${data.auth_token}`
+  document.cookie = `uuid=${data.user_uuid}`
+  return data
+}
 
 export const getProfileInfo = async (uuid: string) => {
   const headers = {
     'Content-Type': 'application/json',
-  };
-  const { data } = await instance.get(`profile?uuid=${uuid}`, { headers });
+  }
+  const { data } = await instance.get(`profile?uuid=${uuid}`, { headers })
 
-  return data;
-};
+  return data
+}
 
 // NEED BILLING
 // export const getAddresses = async ({latLng}:any) => {
@@ -79,103 +79,103 @@ export const changeDataProfile = async (
   field?: string,
   data?: string | Blob,
 ) => {
-  const formData = new FormData();
+  const formData = new FormData()
   const headers = {
     'Content-Type': 'multipart/form-data',
     Authorization: `Token ${getCookie('tokenAuth')}`,
-  };
+  }
 
-  formData.append('uuid', `${user_uuid}`);
-  field === 'photo' && formData.append('tg_token', `${token}`);
-  formData.append(`${field}`, `${data}`);
+  formData.append('uuid', `${user_uuid}`)
+  field === 'photo' && formData.append('tg_token', `${token}`)
+  formData.append(`${field}`, `${data}`)
 
-  const response = await instance.put('profile', formData, { headers });
-  return response.data;
-};
+  const response = await instance.put('profile', formData, { headers })
+  return response.data
+}
 
 export const addWishes = async (text: string, last_edit: number) => {
   const headers = {
     Authorization: `Token ${getCookie('tokenAuth')}`,
-  };
+  }
   const data = {
     text: text,
     last_edit: last_edit,
-  };
-  const response = await instance.post('addorupdatewish', data, { headers });
-  return response.data;
-};
+  }
+  const response = await instance.post('addorupdatewish', data, { headers })
+  return response.data
+}
 
 export const addAbility = async (text: string, last_edit: number) => {
   const headers = {
     Authorization: `Token ${getCookie('tokenAuth')}`,
-  };
+  }
   const data = {
     text: text,
     last_edit: last_edit,
-  };
-  const response = await instance.post('addorupdateability', data, { headers });
-  return response.data;
-};
+  }
+  const response = await instance.post('addorupdateability', data, { headers })
+  return response.data
+}
 
 export const addProfileParent = async (field?: string, data?: parent) => {
-  const formData = new FormData();
+  const formData = new FormData()
   const headers = {
     'Content-Type': 'multipart/form-data',
     Authorization: `Token ${getCookie('tokenAuth')}`,
-  };
-
-  formData.append('uuid', `${user_uuid}`);
-  formData.append('first_name', `${data?.data.first_name}`);
-  formData.append('dod', `${data?.data.dod}`);
-  formData.append('dob', `${data?.data.dob}`);
-  formData.append('gender', `${data?.data.gender}`);
-  formData.append('latitude', `${data?.data.latitude}`);
-  formData.append('longitude', `${data?.data.longitude}`);
-  formData.append('photo', `${data?.data.photo}`);
-  formData.append('link_uuid', `${user_uuid}`);
-  if (field === 'mother') {
-    formData.append('link_relation', 'new_is_mother');
-  } else {
-    formData.append('link_relation', 'new_is_father');
   }
 
-  const response = await instance.post('profile', formData, { headers });
+  formData.append('uuid', `${user_uuid}`)
+  formData.append('first_name', `${data?.data.first_name}`)
+  formData.append('dod', `${data?.data.dod}`)
+  formData.append('dob', `${data?.data.dob}`)
+  formData.append('gender', `${data?.data.gender}`)
+  formData.append('latitude', `${data?.data.latitude}`)
+  formData.append('longitude', `${data?.data.longitude}`)
+  formData.append('photo', `${data?.data.photo}`)
+  formData.append('link_uuid', `${user_uuid}`)
+  if (field === 'mother') {
+    formData.append('link_relation', 'new_is_mother')
+  } else {
+    formData.append('link_relation', 'new_is_father')
+  }
 
-  return response.data;
-};
+  const response = await instance.post('profile', formData, { headers })
+
+  return response.data
+}
 
 export const getRelative = async () => {
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Token ${getCookie('tokenAuth')}`,
-  };
-  const { data } = await instance.get(`profile`, { headers });
+  }
+  const { data } = await instance.get(`profile`, { headers })
 
-  return data;
-};
+  return data
+}
 
 export const fetchChangeParent = async (
   field: string,
   data: any,
   uuid: string,
 ) => {
-  const formData = new FormData();
+  const formData = new FormData()
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Token ${getCookie('tokenAuth')}`,
-  };
-  formData.append('uuid', `${uuid}`);
-  formData.append(field, `${data}`);
+  }
+  formData.append('uuid', `${uuid}`)
+  formData.append(field, `${data}`)
 
-  const response = await instance.put('profile', formData, { headers });
-  return response.data;
-};
+  const response = await instance.put('profile', formData, { headers })
+  return response.data
+}
 
-export const FetchSearchProfile = async (name: string) => {
+export const FetchSearchProfileByName = async (name: string) => {
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Token ${getCookie('tokenAuth')}`,
-  };
+  }
 
   const response = await instance.get('getstats/user_connections_graph', {
     headers,
@@ -183,9 +183,31 @@ export const FetchSearchProfile = async (name: string) => {
       query: name,
       uuid: user_uuid,
     },
-  });
-  return response.data;
-};
+  })
+  return response.data
+}
+
+export const fetchConnectWithParent = async (
+  uuid: string,
+  parent: 'father' | 'mother' | 'not_parent',
+) => {
+  const idTable = {
+    father: 6,
+    not_parent: 7,
+    mother: 8,
+  }
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${getCookie('tokenAuth')}`,
+  }
+  const formData = new FormData()
+  formData.append('user_id_from', `${user_uuid}`)
+  formData.append('user_id_to', `${uuid}`)
+  formData.append('operation_type_id', `${idTable[parent]}`)
+
+  const response = await instance.post('addoperation', formData, { headers })
+  return response.data
+}
 
 // export const deleteFather = async () => {
 //   const formData = new FormData();

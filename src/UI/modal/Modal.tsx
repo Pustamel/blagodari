@@ -1,10 +1,10 @@
-import React from 'react';
-import styles from './Modal.module.scss';
-import cross from '../../assets/icons/cross.svg';
+import React from 'react'
+import styles from './Modal.module.scss'
+import cross from '../../assets/icons/cross.svg'
 
 interface modalProps {
-  children: React.ReactNode;
-  closeModal(): void;
+  children: React.ReactNode
+  closeModal(): void
 }
 
 export const Modal = ({ children, closeModal }: modalProps) => {
@@ -17,5 +17,5 @@ export const Modal = ({ children, closeModal }: modalProps) => {
         {children}
       </div>
     </div>
-  );
-};
+  )
+}

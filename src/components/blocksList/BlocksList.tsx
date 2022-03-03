@@ -1,8 +1,8 @@
-import styles from './BlockList.module.scss';
-import { abilitiesAndWishesType } from '../../store/types/typesProfile';
+import styles from './BlockList.module.scss'
+import { abilitiesAndWishesType } from '../../store/types/typesProfile'
 
 interface blocksListTypes {
-  list: abilitiesAndWishesType[];
+  list: abilitiesAndWishesType[]
 }
 
 export const BlocksList = ({ list }: blocksListTypes) => {
@@ -13,8 +13,8 @@ export const BlocksList = ({ list }: blocksListTypes) => {
           <div className={styles.itemBlock} key={item.uuid}>
             {item.text}
           </div>
-        );
+        )
       })}
     </div>
-  );
-};
+  )
+}

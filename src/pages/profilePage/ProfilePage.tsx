@@ -1,80 +1,79 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import styles from './ProfilePage.module.scss';
-import { Button } from '../../UI/button/Button';
+import React, { useCallback, useEffect, useState } from 'react'
+import styles from './ProfilePage.module.scss'
+import { Button } from '../../UI/button/Button'
 import {
   thunkAddAbility,
   thunkAddWish,
   thunkChangeProfile,
   thunkGetProfile,
-} from '../../store/thunks';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import classNames from 'classnames';
-import { nowDate, useWindowDimensions } from '../../utils/functions';
-import { Map } from '../../components/map/Map';
-import editIcon from '../../assets/icons/edit.svg';
-import { CustomInput } from '../../UI/input/CustomInput';
-import { InformationLayout } from './InformationLayout';
-import { Modal } from '../../UI/modal/Modal';
-import { BlocksList } from '../../components/blocksList/BlocksList';
-import { ChangePhoto } from './changePhoto/ChangePhoto';
-import { isSelfProfile } from '../../utils/constants';
-import { useParams } from 'react-router-dom';
+} from '../../store/thunks'
+import { useAppDispatch, useAppSelector } from '../../store/store'
+import classNames from 'classnames'
+import { nowDate, useWindowDimensions } from '../../utils/functions'
+import { Map } from '../../components/map/Map'
+import editIcon from '../../assets/icons/edit.svg'
+import { CustomInput } from '../../UI/input/CustomInput'
+import { InformationLayout } from './InformationLayout'
+import { Modal } from '../../UI/modal/Modal'
+import { BlocksList } from '../../components/blocksList/BlocksList'
+import { ChangePhoto } from './changePhoto/ChangePhoto'
+import { isSelfProfile } from '../../utils/constants'
+import { useParams } from 'react-router-dom'
 
 export const ProfilePage: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const state = useAppSelector(state => state.MainReducer.profile);
-  const [editMode, setEditMode] = useState<string>('');
-  const [isOpenModal, setOpenModal] = useState<boolean>(false);
-  const [valueInput, setValueInput] = useState<string>('');
-  const params = useParams();
+  const dispatch = useAppDispatch()
+  const state = useAppSelector(state => state.MainReducer.profile)
+  const [editMode, setEditMode] = useState<string>('')
+  const [isOpenModal, setOpenModal] = useState<boolean>(false)
+  const [valueInput, setValueInput] = useState<string>('')
+  const [buttonCopyText, setButtonCopyText] = useState('Ссылка на профиль')
+  const params = useParams()
 
   useEffect(() => {
     typeof params.profileId === 'string' &&
-      dispatch(thunkGetProfile({ uuid: params.profileId }));
-  }, [params.profileId]);
+      dispatch(thunkGetProfile({ uuid: params.profileId }))
+  }, [params.profileId])
 
-  console.log('state:', state);
+  console.log('state:', state)
 
-  let timer: NodeJS.Timeout;
+  let timer: NodeJS.Timeout
   const onChangeInput = useCallback((event: any, field: string | undefined) => {
-    clearTimeout(timer);
+    clearTimeout(timer)
     timer = setTimeout(() => {
       if (field !== '' && field !== undefined) {
-        dispatch(
-          thunkChangeProfile({ field: field, data: event.target.value }),
-        );
-        setEditMode('');
+        dispatch(thunkChangeProfile({ field: field, data: event.target.value }))
+        setEditMode('')
       }
-    }, 1000);
-  }, []);
+    }, 1000)
+  }, [])
 
-  const { width } = useWindowDimensions();
+  const { width } = useWindowDimensions()
 
   const changeEditMode = (field: string) => {
-    setOpenModal(true);
-    setEditMode(field);
-  };
+    setOpenModal(true)
+    setEditMode(field)
+  }
 
   const onClickButtonInModal = (field: string) => {
-    setOpenModal(false);
-    const data = { text: valueInput, last_edit: nowDate() };
+    setOpenModal(false)
+    const data = { text: valueInput, last_edit: nowDate() }
     if (field === 'wishes') {
-      dispatch(thunkAddWish({ field: field, data }));
+      dispatch(thunkAddWish({ field: field, data }))
     }
     if (field === 'ability') {
-      dispatch(thunkAddAbility({ field: field, data }));
+      dispatch(thunkAddAbility({ field: field, data }))
     }
-    setValueInput('');
-  };
+    setValueInput('')
+  }
 
   const editModeLayout = ({
     placeholder,
     defaultValue,
     field,
   }: {
-    placeholder?: string;
-    defaultValue?: string;
-    field?: string;
+    placeholder?: string
+    defaultValue?: string
+    field?: string
   }) => {
     return (
       <div className={styles.editModeBlock}>
@@ -93,8 +92,8 @@ export const ProfilePage: React.FC = () => {
           title="OK"
         />
       </div>
-    );
-  };
+    )
+  }
 
   //pencil
   const editImage = (field: string) => {
@@ -107,17 +106,35 @@ export const ProfilePage: React.FC = () => {
           alt=""
         />
       )
-    );
-  };
+    )
+  }
+
+  const onCopyText = () => {
+    typeof params.profileId === 'string' &&
+      navigator.clipboard.writeText(params.profileId as string)
+    setButtonCopyText('Скопировано!')
+    setTimeout(() => {
+      setButtonCopyText('Ссылка на профиль')
+    }, 3000)
+  }
 
   return (
     <div className={styles.containerProfilePage}>
       <div className={styles.containerFirstBlock}>
         <ChangePhoto photo={state.photo} />
-
+        <Button
+          onClick={onCopyText}
+          className={classNames(styles.copyButton, styles.desktopCopyBtn)}
+          title={buttonCopyText}
+        />
         {/*MOBILE INFORMATION*/}
         {width < 640 && (
           <div>
+            <Button
+              onClick={onCopyText}
+              className={styles.copyButton}
+              title={buttonCopyText}
+            />
             <InformationLayout
               changeEditMode={changeEditMode}
               editMode={editMode}
@@ -173,7 +190,7 @@ export const ProfilePage: React.FC = () => {
                 </div>
                 <ul className={classNames(styles.lightText, styles.cardList)}>
                   {state.abilities.map(item => {
-                    return <li key={item.uuid}>{item.text}</li>;
+                    return <li key={item.uuid}>{item.text}</li>
                   })}
                 </ul>
               </>
@@ -206,7 +223,7 @@ export const ProfilePage: React.FC = () => {
               </div>
               <ul className={classNames(styles.lightText, styles.cardList)}>
                 {state.wishes.map(item => {
-                  return <li key={item.uuid}>{item.text}</li>;
+                  return <li key={item.uuid}>{item.text}</li>
                 })}
               </ul>
             </div>
@@ -264,5 +281,5 @@ export const ProfilePage: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

@@ -4,22 +4,25 @@ import {
   addWishes,
   changeDataProfile,
   fetchChangeParent,
+  fetchConnectWithParent,
+  FetchSearchProfileByName,
   getProfileInfo,
-} from '../api/api';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+} from '../api/api'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
   getProfileProps,
   parent,
   propsAddWishAndAbility,
   propsChangeFiledParent,
   propsChangeProfile,
-} from './types/thunkTypes';
+} from './types/thunkTypes'
+import { deleteParent } from './Profile'
 
 export const thunkGetProfile = createAsyncThunk(
   'getProfile/me',
   async (props: getProfileProps, thunkAPI) => {
     try {
-      const response = await getProfileInfo(props.uuid);
+      const response = await getProfileInfo(props.uuid)
       return {
         photo: response.photo,
         name: response.first_name,
@@ -32,24 +35,24 @@ export const thunkGetProfile = createAsyncThunk(
         latitude: response.latitude,
         longitude: response.longitude,
         wishes: response.wishes,
-      };
+      }
     } catch (e) {
-      return thunkAPI.rejectWithValue('Не удалось загрузить профиль');
+      return thunkAPI.rejectWithValue('Не удалось загрузить профиль')
     }
   },
-);
+)
 
 export const thunkChangeProfile = createAsyncThunk(
   'updateProfile',
   async (props: propsChangeProfile, { rejectWithValue, fulfillWithValue }) => {
     try {
-      const response = await changeDataProfile(props.field, props.data);
-      fulfillWithValue(response);
+      const response = await changeDataProfile(props.field, props.data)
+      fulfillWithValue(response)
     } catch (error) {
-      return rejectWithValue('Не удалось обновить профиль');
+      return rejectWithValue('Не удалось обновить профиль')
     }
   },
-);
+)
 
 export const thunkAddWish = createAsyncThunk(
   'addWish',
@@ -58,13 +61,13 @@ export const thunkAddWish = createAsyncThunk(
     { rejectWithValue, fulfillWithValue },
   ) => {
     try {
-      const response = await addWishes(props.data.text, props.data.last_edit);
-      fulfillWithValue(response);
+      const response = await addWishes(props.data.text, props.data.last_edit)
+      fulfillWithValue(response)
     } catch (error) {
-      return rejectWithValue('Не удалось обновить профиль');
+      return rejectWithValue('Не удалось добавить потребность')
     }
   },
-);
+)
 
 export const thunkAddAbility = createAsyncThunk(
   'addAbility',
@@ -73,13 +76,13 @@ export const thunkAddAbility = createAsyncThunk(
     { rejectWithValue, fulfillWithValue },
   ) => {
     try {
-      const response = await addAbility(props.data.text, props.data.last_edit);
-      fulfillWithValue(response);
+      const response = await addAbility(props.data.text, props.data.last_edit)
+      fulfillWithValue(response)
     } catch (error) {
-      return rejectWithValue('Не удалось обновить профиль');
+      return rejectWithValue('Не удалось добавить возможность')
     }
   },
-);
+)
 
 export const thunkAddParent = createAsyncThunk(
   'addParent',
@@ -94,24 +97,53 @@ export const thunkAddParent = createAsyncThunk(
         latitude: props.data.latitude !== undefined ? props.data.latitude : '',
         longitude:
           props.data.longitude !== undefined ? props.data.longitude : '',
-      };
+      }
       const response = await addProfileParent(props.field, {
         data: parentObject,
-      });
-      fulfillWithValue(response);
+      })
+      fulfillWithValue(response)
     } catch (error) {
-      return rejectWithValue('Не удалось обновить профиль');
+      return rejectWithValue('Не удалось добавить родственника')
     }
   },
-);
+)
 
 export const thunkChangeFieldParent = createAsyncThunk(
   'changeParent',
   async (props: propsChangeFiledParent, { rejectWithValue }) => {
     try {
-      return await fetchChangeParent(props.field, props.data, props.uuid);
+      return await fetchChangeParent(props.field, props.data, props.uuid)
     } catch (error) {
-      return rejectWithValue('Не удалось обновить профиль');
+      return rejectWithValue('Не удалось изменить поле')
     }
   },
-);
+)
+
+export const thunkSearchByName = createAsyncThunk(
+  'searchByName',
+  async (props: { name: string }, { rejectWithValue }) => {
+    try {
+      return await FetchSearchProfileByName(props.name)
+    } catch (error) {
+      return rejectWithValue('Не удалось найти')
+    }
+  },
+)
+
+export const thunkConnectParent = createAsyncThunk(
+  'connectUserWithParent',
+  async (
+    props: { uuid: string; parent: 'father' | 'mother' | 'not_parent' },
+    { rejectWithValue, dispatch },
+  ) => {
+    try {
+      const response = await fetchConnectWithParent(props.uuid, props.parent)
+      if (props.parent === 'not_parent') {
+        dispatch(deleteParent({ props }))
+      }
+      return response
+    } catch (error) {
+      return rejectWithValue('Не удалось найти')
+    }
+  },
+)

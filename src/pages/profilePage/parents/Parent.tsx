@@ -1,39 +1,43 @@
-import styles from '../ProfilePage.module.scss';
-import classes from './Parent.module.scss';
-import { Modal } from '../../../UI/modal/Modal';
-import { ChangePhotoParent } from '../changePhoto/ChangePhotoParent';
-import { CustomInput } from '../../../UI/input/CustomInput';
-import { CustomSelect } from '../../../UI/input/Select';
-import { Button } from '../../../UI/button/Button';
-import { thunkAddParent, thunkChangeFieldParent } from '../../../store/thunks';
-import React, { useState } from 'react';
-import { changeParentFields } from '../../../store/Profile';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
-import { isSelfProfile } from '../../../utils/constants';
-import editIcon from '../../../assets/icons/edit.svg';
-import classNames from 'classnames';
-import crossIcon from '../../../assets/icons/cross.svg';
-import { propsChangeFiledParent } from '../../../store/types/thunkTypes';
-import { SearchParent } from './SearchParent';
+import styles from '../ProfilePage.module.scss'
+import classes from './Parent.module.scss'
+import { Modal } from '../../../UI/modal/Modal'
+import { ChangePhotoParent } from '../changePhoto/ChangePhotoParent'
+import { CustomInput } from '../../../UI/input/CustomInput'
+import { CustomSelect } from '../../../UI/input/Select'
+import { Button } from '../../../UI/button/Button'
+import {
+  thunkAddParent,
+  thunkChangeFieldParent,
+  thunkConnectParent,
+} from '../../../store/thunks'
+import React, { useState } from 'react'
+import { changeParentFields } from '../../../store/Profile'
+import { useAppDispatch, useAppSelector } from '../../../store/store'
+import { isSelfProfile } from '../../../utils/constants'
+import editIcon from '../../../assets/icons/edit.svg'
+import classNames from 'classnames'
+import crossIcon from '../../../assets/icons/cross.svg'
+import { propsChangeFiledParent } from '../../../store/types/thunkTypes'
+import { SearchParent } from './SearchParent'
 
 const listOfGender = [
   { value: '', id: 'noSelect', text: 'не определено' },
   { value: 'm', id: 'male', text: 'мужской' },
   { value: 'f', id: 'female', text: 'женский' },
-];
+]
 
 export const Parents = ({
   changeEditMode,
 }: {
-  changeEditMode: (arg0: string) => void;
+  changeEditMode: (arg0: string) => void
 }) => {
-  const state = useAppSelector(state => state.MainReducer.profile);
-  const [isOpenModal, setOpenModal] = useState<string>('');
-  const [activeEditList, setActiveEditList] = useState<string>('');
-  const [searchModal, setSearchModal] = useState<'father' | 'mother' | ''>('');
-  const dispatch = useAppDispatch();
+  const state = useAppSelector(state => state.MainReducer.profile)
+  const [isOpenModal, setOpenModal] = useState<string>('')
+  const [activeEditList, setActiveEditList] = useState<string>('')
+  const [searchModal, setSearchModal] = useState<'father' | 'mother' | ''>('')
+  const dispatch = useAppDispatch()
 
-  let timeout: NodeJS.Timeout;
+  let timeout: NodeJS.Timeout
   const onChangeMother = (event: any, field: string) => {
     if (state.mother === null) {
       dispatch(
@@ -42,9 +46,9 @@ export const Parents = ({
           typeField: 'mother',
           data: event.target.value,
         }),
-      );
+      )
     } else {
-      clearTimeout(timeout);
+      clearTimeout(timeout)
       timeout = setTimeout(() => {
         dispatch(
           thunkChangeFieldParent({
@@ -53,17 +57,17 @@ export const Parents = ({
             typeField: 'mother',
             data: event.target.value,
           } as propsChangeFiledParent),
-        );
-      }, 3000);
+        )
+      }, 3000)
     }
-  };
+  }
 
   const onCloseModal = () => {
     //modal for create and edit parents
-    changeEditMode('');
-    setOpenModal('');
-    setActiveEditList('');
-  };
+    changeEditMode('')
+    setOpenModal('')
+    setActiveEditList('')
+  }
 
   const onChangeFather = (event: any, field: string) => {
     if (state.father === null) {
@@ -73,9 +77,9 @@ export const Parents = ({
           typeField: 'father',
           data: event.target.value,
         }),
-      );
+      )
     } else {
-      field !== 'gender' && clearTimeout(timeout);
+      field !== 'gender' && clearTimeout(timeout)
       timeout = setTimeout(() => {
         dispatch(
           thunkChangeFieldParent({
@@ -84,25 +88,34 @@ export const Parents = ({
             typeField: 'father',
             data: event.target.value,
           } as propsChangeFiledParent),
-        );
-      }, 1000);
+        )
+      }, 1000)
     }
-  };
+  }
 
   const editImage = (field: string) => {
     return (
       isSelfProfile && (
         <img
           onClick={() => {
-            setActiveEditList(field);
+            setActiveEditList(field)
           }}
           className={classNames(styles.editIcon, classes.edit)}
           src={editIcon}
           alt=""
         />
       )
-    );
-  };
+    )
+  }
+
+  const deleteParent = (field: 'father' | 'mother') => {
+    console.log('delete')
+    if (Boolean(state[field]?.uuid)) {
+      // @ts-ignore
+      const id: string = state[field].uuid
+      dispatch(thunkConnectParent({ uuid: id, parent: 'not_parent' }))
+    }
+  }
 
   const interactionWithParent = ({ field }: { field: 'mother' | 'father' }) => (
     <div className={classes.interactionParent}>
@@ -123,6 +136,16 @@ export const Parents = ({
             className={classes.button}
           >
             Изменить
+          </button>
+          <button
+            onClick={() =>
+              field === 'mother' || field === 'father'
+                ? deleteParent(field)
+                : setOpenModal(field)
+            }
+            className={classes.button}
+          >
+            Удалить
           </button>
         </>
       )}
@@ -149,10 +172,24 @@ export const Parents = ({
         </>
       )}
     </div>
-  );
+  )
 
   return (
     <>
+      {searchModal === 'father' && (
+        <SearchParent
+          onSelectParent={setActiveEditList}
+          parent="father"
+          closeModal={() => setSearchModal('')}
+        />
+      )}
+      {searchModal === 'mother' && (
+        <SearchParent
+          onSelectParent={setActiveEditList}
+          parent="mother"
+          closeModal={() => setSearchModal('')}
+        />
+      )}
       <div className={classNames(styles.withEdit, classes.containerFather)}>
         <>
           <p className={classes.name}>
@@ -163,9 +200,6 @@ export const Parents = ({
           {activeEditList === 'father' &&
             interactionWithParent({ field: 'father' })}
         </>
-        {searchModal === 'father' && (
-          <SearchParent closeModal={() => setSearchModal('')} />
-        )}
         {isOpenModal === 'father' && (
           <Modal closeModal={onCloseModal}>
             <ChangePhotoParent
@@ -282,5 +316,5 @@ export const Parents = ({
         )}
       </div>
     </>
-  );
-};
+  )
+}

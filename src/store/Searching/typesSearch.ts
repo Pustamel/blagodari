@@ -1,5 +1,18 @@
-import { profileData } from '../types/typesProfile';
-
 export interface initialStateType {
-  searchedProfiles: Array<profileData> | [];
+  searchedProfiles: profile[]
+  isLoading: boolean
+}
+
+interface profile {
+  last_name?: string
+  ability: string | null
+  comment: string
+  dob: string | null
+  dod: string | null
+  first_name: string
+  gender: string | null
+  latitude: number | string
+  longitude: number | string
+  photo: string
+  uuid: string
 }

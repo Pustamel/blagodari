@@ -11,6 +11,9 @@
 .modal {
   min-width: 350px;
   min-height: 100px;
+  max-height: 850px;
+  overflow-y: auto;
+  box-sizing: border-box;
   padding: 20px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
   border-radius: 5px;

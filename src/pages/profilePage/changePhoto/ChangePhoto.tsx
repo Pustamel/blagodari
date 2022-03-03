@@ -1,21 +1,22 @@
-import styles from './ChangePhoto.module.scss';
-import camera from '../../../assets/icons/camera.svg';
-import React from 'react';
-import { useAppDispatch } from '../../../store/store';
-import { thunkChangeProfile, thunkGetProfile } from '../../../store/thunks';
-import { toBase64 } from '../../../utils/functions';
-import { uuid } from '../../../utils/constants';
+import styles from './ChangePhoto.module.scss'
+import camera from '../../../assets/icons/camera.svg'
+import React from 'react'
+import { useAppDispatch } from '../../../store/store'
+import { thunkChangeProfile, thunkGetProfile } from '../../../store/thunks'
+import { toBase64 } from '../../../utils/functions'
+import { uuid } from '../../../utils/constants'
+import defaultPhoto from '../../../assets/images/default_photo.png'
 
 export const ChangePhoto = ({ photo }: { photo?: string }) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   const onChange = (event: any) => {
     toBase64(event)
       .then(data => dispatch(thunkChangeProfile({ field: 'photo', data })))
       .then(() => {
-        typeof uuid === 'string' && dispatch(thunkGetProfile({ uuid: uuid }));
-      });
-  };
+        typeof uuid === 'string' && dispatch(thunkGetProfile({ uuid: uuid }))
+      })
+  }
 
   return (
     <>
@@ -33,15 +34,11 @@ export const ChangePhoto = ({ photo }: { photo?: string }) => {
         <div className={styles.containerAvatar}>
           <img
             className={styles.avatar}
-            src={
-              photo !== ''
-                ? photo
-                : 'https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png'
-            }
+            src={photo !== '' ? photo : defaultPhoto}
             alt=""
           />
         </div>
       </label>
     </>
-  );
-};
+  )
+}
