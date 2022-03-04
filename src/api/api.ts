@@ -9,7 +9,7 @@ const instance = axios.create({
 
 const token = process.env.REACT_APP_TG_TOKEN
 
-// const token =
+// const tokenAuth =
 // getCookie('tokenAuth') !== null && getCookie('tokenAuth') !== undefined
 //   ? getCookie('tokenAuth')
 //   : '';

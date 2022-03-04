@@ -28,7 +28,7 @@ export const ProfilePage: React.FC = () => {
   const [valueInput, setValueInput] = useState<string>('')
   const [buttonCopyText, setButtonCopyText] = useState('Ссылка на профиль')
   const params = useParams()
-
+//TODO исправить переход на профиль при вервой загрузке страницы uuid = undefined
   useEffect(() => {
     typeof params.profileId === 'string' &&
       dispatch(thunkGetProfile({ uuid: params.profileId }))
