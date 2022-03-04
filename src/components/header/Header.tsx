@@ -1,42 +1,45 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import styles from './Header.module.scss';
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import styles from './Header.module.scss'
 import {
   delete_cookie,
   getCookie,
   useWindowDimensions,
-} from '../../utils/functions';
-import { Button } from '../../UI/button/Button';
-import { MobileHeader } from './MobileHeader';
+} from '../../utils/functions'
+import { Button } from '../../UI/button/Button'
+import { MobileHeader } from './MobileHeader'
 
 export const Header: React.FC = () => {
-  const cookie = getCookie('tokenAuth');
-  const [isAuth, setIsAuth] = useState(Boolean(cookie));
-  const [isOpenMobileHeader, setIsOpenMobileHeader] = useState(false);
+  const cookie = getCookie('tokenAuth')
+  const [isAuth, setIsAuth] = useState(Boolean(cookie))
+  const [isOpenMobileHeader, setIsOpenMobileHeader] = useState(false)
 
   const logout = () => {
-    delete_cookie('tokenAuth');
-    delete_cookie('uuid');
-    setIsAuth(Boolean(getCookie('tokenAuth')));
-  };
+    delete_cookie('tokenAuth')
+    delete_cookie('uuid')
+    delete_cookie('stel_token')
+    setIsAuth(Boolean(getCookie('tokenAuth')))
+  }
 
   const authButton = () => {
     if (isAuth) {
-      return <Button onClick={logout} title="Выход" />;
+      return <Button onClick={logout} title="Выход" />
     } else {
       return (
         <Link to="/login">
           <Button title="Вход" onClick={() => setIsOpenMobileHeader(false)} />
         </Link>
-      );
+      )
     }
-  };
+  }
 
-  const { width } = useWindowDimensions();
+  const { width } = useWindowDimensions()
 
   const closeNavMobile = () => {
-    setIsOpenMobileHeader(false);
-  };
+    setIsOpenMobileHeader(false)
+  }
+  /*eslint @typescript-eslint/no-empty-function: 0*/
+  useEffect(() => {}, [getCookie('tokenAuth'), isAuth])
 
   return (
     <div className={styles.container}>
@@ -52,7 +55,7 @@ export const Header: React.FC = () => {
           <Link className={styles.link} to="/graph">
             Граф
           </Link>
-          <Link className={styles.link} to="/profile">
+          <Link className={styles.link} to={`/profile/${getCookie('uuid')}`}>
             Профиль
           </Link>
           {authButton()}
@@ -71,12 +74,16 @@ export const Header: React.FC = () => {
           <Link onClick={closeNavMobile} className={styles.link} to="/graph">
             Граф
           </Link>
-          <Link onClick={closeNavMobile} className={styles.link} to="/profile">
+          <Link
+            onClick={closeNavMobile}
+            className={styles.link}
+            to={`/profile/${getCookie('uuid')}`}
+          >
             Профиль
           </Link>
           {authButton()}
         </MobileHeader>
       )}
     </div>
-  );
-};
+  )
+}

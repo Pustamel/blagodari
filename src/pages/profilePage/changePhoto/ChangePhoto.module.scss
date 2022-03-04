@@ -1,0 +1,112 @@
+.inputFile {
+  display: none;
+}
+.labelPhoto {
+  cursor: pointer;
+}
+.labelPhoto > span {
+  display: none;
+}
+
+.labelPhoto:hover > span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  position: absolute;
+  z-index: 10;
+  left: 7%;
+  top: 51%;
+  color: white;
+  font-size: 18px;
+
+  .camera {
+    width: 50px;
+  }
+}
+
+.avatar {
+  background: #610a0a;
+  width: 250px;
+  height: 250px;
+  border-radius: 5px;
+}
+
+.containerAvatar::before {
+  display: none;
+  content: '';
+  background: rgba(0, 0, 0, 0.62);
+  width: 250px;
+  height: 250px;
+  position: absolute;
+}
+
+.labelPhoto:hover .containerAvatar::before {
+  display: block;
+  border-radius: 5px;
+}
+
+@media (min-width: 1100px) {
+  .labelPhoto:hover > span {
+    left: 11%;
+    top: 27%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .labelPhoto:hover > span {
+    left: 9%;
+    top: 27%;
+  }
+}
+
+@media (min-width: 1700px) {
+  .labelPhoto:hover > span {
+    left: 7%;
+    top: 25%;
+  }
+}
+@media (max-width: 1100px) {
+  .labelPhoto:hover > span {
+    left: 10%;
+    top: 27%;
+  }
+}
+
+@media (max-width: 780px) {
+  .avatar,
+  .containerAvatar::before {
+    width: 200px;
+    height: 200px;
+  }
+  .labelPhoto:hover > span {
+    left: 6%;
+    top: 13%;
+  }
+}
+
+@media (max-width: 640px) {
+  .avatar,
+  .containerAvatar::before {
+    width: 150px;
+    height: 150px;
+  }
+  .labelPhoto:hover > span {
+    left: 4%;
+    top: 10%;
+  }
+}
+
+.parentAvatar,
+.labelPhotoParent .containerAvatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.labelPhotoParent {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

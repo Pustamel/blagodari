@@ -1,0 +1,79 @@
+* {
+  font-size: 16px;
+  box-sizing: border-box;
+}
+//COMMON
+.customInput,
+.customSelect {
+  display: flex;
+  flex-direction: column;
+}
+
+.editLabel {
+  color: #610a0a;
+  margin-left: 5px;
+}
+
+.editInput,
+.select {
+  outline: none;
+  border: #f6aa62 1px solid;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(135, 11, 11, 0.37);
+  color: #a75454;
+  background: white;
+
+  &::placeholder {
+    color: #f4dfcb;
+  }
+}
+//INPUT
+.smallInput {
+  min-width: 263px;
+  @media (max-width: 640px) {
+    min-width: 150px;
+  }
+  @media (max-width: 500px) {
+    min-width: 100px;
+  }
+}
+
+.middle {
+  min-width: 349px;
+}
+
+.big {
+  min-width: 779px;
+}
+
+.withSettings {
+  background: transparent url('../../assets/icons/points.svg') no-repeat;
+  background-position-x: 96%;
+  background-position-y: 11px;
+}
+
+.withSettings:hover {
+  cursor: pointer;
+}
+
+//SELECT
+.select {
+  min-width: 263px;
+  cursor: pointer;
+}
+
+.select {
+  background: transparent url('../../assets/icons/arrow-down.svg') no-repeat;
+  background-position-x: 96%;
+  background-position-y: 14px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.option:focus-visible {
+  border-radius: 5px;
+  border: 1px solid #610a0a;
+  outline: none;
+}

@@ -1,12 +1,12 @@
-import burger from '../../assets/icons/burger.svg';
-import cross from '../../assets/icons/cross.svg';
-import { ReactNode } from 'react';
-import styles from './Header.module.scss';
+import burger from '../../assets/icons/burger.svg'
+import cross from '../../assets/icons/cross.svg'
+import { ReactNode } from 'react'
+import styles from './Header.module.scss'
 
 interface mobileHeaderType {
-  children: ReactNode;
-  isOpen: boolean;
-  setIsOpen: (arg0: boolean) => void;
+  children: ReactNode
+  isOpen: boolean
+  setIsOpen: (arg0: boolean) => void
 }
 
 export const MobileHeader = ({
@@ -34,5 +34,5 @@ export const MobileHeader = ({
         </>
       ) : null}
     </div>
-  );
-};
+  )
+}

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Component, createRef, ReactNode } from 'react';
+import * as React from 'react'
+import { Component, createRef, ReactNode } from 'react'
 
 export enum TLoginButtonSize {
   Large = 'large',
@@ -8,29 +8,29 @@ export enum TLoginButtonSize {
 }
 
 export type TUser = Readonly<{
-  auth_date: number;
-  first_name: string;
-  last_name?: string;
-  hash: string;
-  id: number;
-  photo_url?: string;
-  username?: string;
-}>;
+  auth_date: number
+  first_name: string
+  last_name?: string
+  hash: string
+  id: number
+  photo_url?: string
+  username?: string
+}>
 
 export type TLoginButtonProps = Readonly<{
-  botName: string;
-  onAuthCallback?: (user: TUser) => void;
-  redirectUrl?: string;
-  buttonSize: TLoginButtonSize;
-  cornerRadius?: number;
-  requestAccess?: string;
-  usePic?: boolean;
-  lang?: string;
-  isDisable?: boolean;
-}>;
+  botName: string
+  onAuthCallback?: (user: TUser) => void
+  redirectUrl?: string
+  buttonSize: TLoginButtonSize
+  cornerRadius?: number
+  requestAccess?: string
+  usePic?: boolean
+  lang?: string
+  isDisable?: boolean
+}>
 
 export class TLoginButton extends Component<TLoginButtonProps> {
-  private readonly _containerRef = createRef<HTMLDivElement>();
+  private readonly _containerRef = createRef<HTMLDivElement>()
 
   componentDidMount(): void {
     const {
@@ -43,46 +43,46 @@ export class TLoginButton extends Component<TLoginButtonProps> {
       redirectUrl,
       lang,
       isDisable,
-    } = this.props;
+    } = this.props
 
     if (onAuthCallback != null) {
-      (window as any).TelegramOnAuthCb = (user: TUser) => onAuthCallback(user);
+      (window as any).TelegramOnAuthCb = (user: TUser) => onAuthCallback(user)
     }
 
-    const script = document.createElement('script');
-    script.src = 'https://telegram.org/js/telegram-widget.js?15';
-    script.async = true;
+    const script = document.createElement('script')
+    script.src = 'https://telegram.org/js/telegram-widget.js?15'
+    script.async = true
 
-    script.setAttribute('data-telegram-login', botName);
+    script.setAttribute('data-telegram-login', botName)
     if (buttonSize != null) {
-      script.setAttribute('data-size', buttonSize);
+      script.setAttribute('data-size', buttonSize)
     }
     if (buttonSize != null) {
-      script.setAttribute('data-radius', `${cornerRadius}`);
+      script.setAttribute('data-radius', `${cornerRadius}`)
     }
     if (usePic != null) {
-      script.setAttribute('data-userpic', `${usePic}`);
+      script.setAttribute('data-userpic', `${usePic}`)
     }
     if (lang != null) {
-      script.setAttribute('data-lang', lang);
+      script.setAttribute('data-lang', lang)
     }
     if (redirectUrl != null) {
-      script.setAttribute('data-auth-url', redirectUrl);
+      script.setAttribute('data-auth-url', redirectUrl)
     }
     if (onAuthCallback != null) {
-      script.setAttribute('data-onauth', 'TelegramOnAuthCb(user)');
+      script.setAttribute('data-onauth', 'TelegramOnAuthCb(user)')
     }
     if (requestAccess != null) {
-      script.setAttribute('data-request-access', requestAccess);
+      script.setAttribute('data-request-access', requestAccess)
     }
     if (isDisable != null) {
-      script.setAttribute('disabled', `${isDisable}`);
+      script.setAttribute('disabled', `${isDisable}`)
     }
 
-    this._containerRef.current?.appendChild(script);
+    this._containerRef.current?.appendChild(script)
   }
 
   render(): ReactNode {
-    return <div className="tlogin-button" ref={this._containerRef} />;
+    return <div className="tlogin-button" ref={this._containerRef} />
   }
 }
