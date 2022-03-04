@@ -17,6 +17,7 @@ import {
   propsChangeProfile,
 } from './types/thunkTypes'
 import { deleteParent } from './Profile'
+import { uuid } from '../utils/constants'
 
 export const thunkGetProfile = createAsyncThunk(
   'getProfile/me',
@@ -56,13 +57,9 @@ export const thunkChangeProfile = createAsyncThunk(
 
 export const thunkAddWish = createAsyncThunk(
   'addWish',
-  async (
-    props: propsAddWishAndAbility,
-    { rejectWithValue, fulfillWithValue },
-  ) => {
+  async (props: propsAddWishAndAbility, { rejectWithValue }) => {
     try {
-      const response = await addWishes(props.data.text, props.data.last_edit)
-      fulfillWithValue(response)
+      return await addWishes(props.data.text, props.data.last_edit)
     } catch (error) {
       return rejectWithValue('Не удалось добавить потребность')
     }
@@ -71,13 +68,9 @@ export const thunkAddWish = createAsyncThunk(
 
 export const thunkAddAbility = createAsyncThunk(
   'addAbility',
-  async (
-    props: propsAddWishAndAbility,
-    { rejectWithValue, fulfillWithValue },
-  ) => {
+  async (props: propsAddWishAndAbility, { rejectWithValue }) => {
     try {
-      const response = await addAbility(props.data.text, props.data.last_edit)
-      fulfillWithValue(response)
+      return await addAbility(props.data.text, props.data.last_edit)
     } catch (error) {
       return rejectWithValue('Не удалось добавить возможность')
     }
@@ -141,6 +134,7 @@ export const thunkConnectParent = createAsyncThunk(
       if (props.parent === 'not_parent') {
         dispatch(deleteParent({ props }))
       }
+      dispatch(thunkGetProfile({ uuid: uuid || '' }))
       return response
     } catch (error) {
       return rejectWithValue('Не удалось найти')

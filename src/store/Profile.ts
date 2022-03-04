@@ -6,6 +6,8 @@ import {
 } from './types/typesProfile'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
+  thunkAddAbility,
+  thunkAddWish,
   thunkChangeFieldParent,
   thunkChangeProfile,
   thunkGetProfile,
@@ -72,21 +74,6 @@ const changeParent = (state: any, action: { payload: propsChangeParent }) => {
   }
 }
 
-const deleteParents = (state: any, action: { payload: any }) => {
-  const id = action.payload.props.uuid
-  if (state.profile.mother.uuid === id) {
-    state.profile = {
-      ...state.profile,
-      mother: null,
-    }
-  } else if (state.profile.father.uuid === id) {
-    state.profile = {
-      ...state.profile,
-      father: null,
-    }
-  }
-}
-
 export const MainReducer = createSlice({
   name: 'profile',
   initialState,
@@ -96,7 +83,20 @@ export const MainReducer = createSlice({
     },
     changeProfileField: changeFieldProfile,
     changeParentFields: changeParent,
-    deleteParent: deleteParents,
+    deleteParent: (state, action) => {
+      const id = action.payload.props.uuid
+      if (state.profile?.mother?.uuid == id) {
+        state.profile = {
+          ...state.profile,
+          mother: null,
+        }
+      } else if (state.profile?.father?.uuid == id) {
+        state.profile = {
+          ...state.profile,
+          father: null,
+        }
+      }
+    },
   },
   extraReducers: {
     [thunkGetProfile.fulfilled.type]: (
@@ -134,6 +134,18 @@ export const MainReducer = createSlice({
           ...state.profile.father,
           [field]: data[field],
         }
+      }
+    },
+    [thunkAddAbility.fulfilled.type]: (state, action) => {
+      state.profile = {
+        ...state.profile,
+        abilities: [...state.profile.abilities, action.payload],
+      }
+    },
+    [thunkAddWish.fulfilled.type]: (state, action) => {
+      state.profile = {
+        ...state.profile,
+        wishes: [...state.profile.wishes, action.payload],
       }
     },
   },

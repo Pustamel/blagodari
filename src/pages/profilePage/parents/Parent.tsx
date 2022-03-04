@@ -32,9 +32,11 @@ export const Parents = ({
   changeEditMode: (arg0: string) => void
 }) => {
   const state = useAppSelector(state => state.MainReducer.profile)
-  const [isOpenModal, setOpenModal] = useState<string>('')
+  const [isOpenModal, setOpenModal] = useState<'father' | 'mother' | ''>('') //modal for create profile (is open modal)
   const [activeEditList, setActiveEditList] = useState<string>('')
-  const [searchModal, setSearchModal] = useState<'father' | 'mother' | ''>('')
+  const [searchModal, setSearchModal] = useState<'father' | 'mother' | ''>('') // search parent(is open modal)
+  const [addLinkModal, setAddLinkModal] = useState<'father' | 'mother' | ''>('') // add parent on link (is open modal)
+  const [currentLinkInModal, setCurrentLinkInModal] = useState('') //link parent (uuid)
   const dispatch = useAppDispatch()
 
   let timeout: NodeJS.Timeout
@@ -109,7 +111,6 @@ export const Parents = ({
   }
 
   const deleteParent = (field: 'father' | 'mother') => {
-    console.log('delete')
     if (Boolean(state[field]?.uuid)) {
       // @ts-ignore
       const id: string = state[field].uuid
@@ -158,7 +159,12 @@ export const Parents = ({
           >
             Добавить из существующего
           </button>
-          <button className={classes.button}>Добавить по ссылке</button>
+          <button
+            onClick={() => setAddLinkModal(field)}
+            className={classes.button}
+          >
+            Добавить по ссылке
+          </button>
           <button
             onClick={() =>
               field !== 'mother' && field !== 'father'
@@ -174,6 +180,11 @@ export const Parents = ({
     </div>
   )
 
+  const addOnLink = ({ field }: { field: 'mother' | 'father' }) => {
+    dispatch(thunkConnectParent({ uuid: currentLinkInModal, parent: field }))
+    setAddLinkModal('')
+  }
+
   return (
     <>
       {searchModal === 'father' && (
@@ -183,12 +194,38 @@ export const Parents = ({
           closeModal={() => setSearchModal('')}
         />
       )}
+      {addLinkModal === 'father' && ( //add parent on paste link (uuid)
+        <Modal closeModal={() => setAddLinkModal('')}>
+          <CustomInput
+            label="Отец"
+            onChange={event => setCurrentLinkInModal(event.target.value)}
+            placeholder="Вставьте ссылку"
+          />
+          <Button
+            title="Добавить"
+            onClick={() => addOnLink({ field: 'father' })}
+          />
+        </Modal>
+      )}
       {searchModal === 'mother' && (
         <SearchParent
           onSelectParent={setActiveEditList}
           parent="mother"
           closeModal={() => setSearchModal('')}
         />
+      )}
+      {addLinkModal === 'mother' && ( //add parent on paste link (uuid)
+        <Modal closeModal={() => setAddLinkModal('')}>
+          <CustomInput
+            label="Мать"
+            onChange={event => setCurrentLinkInModal(event.target.value)}
+            placeholder="Вставьте ссылку"
+          />
+          <Button
+            title="Добавить"
+            onClick={() => addOnLink({ field: 'mother' })}
+          />
+        </Modal>
       )}
       <div className={classNames(styles.withEdit, classes.containerFather)}>
         <>
@@ -200,7 +237,7 @@ export const Parents = ({
           {activeEditList === 'father' &&
             interactionWithParent({ field: 'father' })}
         </>
-        {isOpenModal === 'father' && (
+        {isOpenModal === 'father' && ( //for create or change parent
           <Modal closeModal={onCloseModal}>
             <ChangePhotoParent
               uuid={state.father?.uuid}
@@ -263,7 +300,7 @@ export const Parents = ({
           {activeEditList === 'mother' &&
             interactionWithParent({ field: 'mother' })}
         </>
-        {isOpenModal === 'mother' && (
+        {isOpenModal === 'mother' && ( //for create or change parent
           <Modal closeModal={onCloseModal}>
             <ChangePhotoParent
               uuid={state.mother?.uuid}

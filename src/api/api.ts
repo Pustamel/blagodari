@@ -41,8 +41,8 @@ export const authTelegram = async (user: object) => {
   const body = JSON.stringify(user)
   const headers = { 'Content-Type': 'application/json' }
   const { data } = await instance.post('auth/telegram', body, { headers })
-  document.cookie = `tokenAuth=${data.auth_token}`
-  document.cookie = `uuid=${data.user_uuid}`
+  document.cookie = `tokenAuth=${data.auth_token}; path=/`
+  document.cookie = `uuid=${data.user_uuid}; path=/`
   return data
 }
 

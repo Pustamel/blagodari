@@ -27,7 +27,7 @@ const listOfGender = [
   { value: 'f', id: 'female', text: 'женский' },
 ]
 
-// gender, dob, dod
+// this for gender, dob, dod and parents
 export const InformationLayout = ({
   editMode,
   changeEditMode,

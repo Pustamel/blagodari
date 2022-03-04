@@ -33,7 +33,7 @@ export const SearchParent = ({
     closeModal()
     onSelectParent('')
   }
-//TODO при выборе из поиска приходится обновлять страницу, чтобы увидеть родителя
+
   return (
     <Modal closeModal={closeModal}>
       <CustomInput
