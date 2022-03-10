@@ -9,8 +9,8 @@ interface dataParent {
   dod?: string | null
   dob?: string | null
   gender?: string
-  latitude?: number | string
-  longitude?: number | string
+  latitude?: number | null
+  longitude?: number | null
 }
 
 export interface getProfileProps {

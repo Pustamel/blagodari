@@ -13,8 +13,8 @@ export interface profileData {
   father: parentType | null
   dob: string | null
   dod?: string | null
-  latitude: number | string
-  longitude: number | string
+  latitude: number | null
+  longitude: number | null
   wishes: Array<abilitiesAndWishesType>
 }
 
@@ -31,8 +31,8 @@ interface parentType {
   dod: string | null
   dob: string | null
   gender: string
-  latitude: number | string
-  longitude: number | string
+  latitude: number | null
+  longitude: number | null
 }
 
 export interface propsProfileField {

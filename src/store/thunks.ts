@@ -87,9 +87,10 @@ export const thunkAddParent = createAsyncThunk(
         dod: props.data.dod !== undefined ? props.data.dod : '',
         dob: props.data.dob !== undefined ? props.data.dob : '',
         gender: props.data.gender !== undefined ? props.data.gender : '',
-        latitude: props.data.latitude !== undefined ? props.data.latitude : '',
+        latitude:
+          props.data.latitude !== undefined ? props.data.latitude : null,
         longitude:
-          props.data.longitude !== undefined ? props.data.longitude : '',
+          props.data.longitude !== undefined ? props.data.longitude : null,
       }
       const response = await addProfileParent(props.field, {
         data: parentObject,

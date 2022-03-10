@@ -10,6 +10,7 @@ interface CustomInputTypes {
   defaultValue?: string
   onChange?: (event: any) => void
   className?: string
+  id?: string
 }
 
 export const CustomInput = ({
@@ -20,11 +21,13 @@ export const CustomInput = ({
   defaultValue,
   onChange,
   className,
+  id,
 }: CustomInputTypes) => {
   return (
     <div className={classNames(styles.customInput, className)}>
       {label !== '' ? <p className={styles.editLabel}>{label}</p> : ''}
       <input
+        id={id}
         onChange={onChange}
         defaultValue={defaultValue}
         readOnly={Boolean(withSettings)}

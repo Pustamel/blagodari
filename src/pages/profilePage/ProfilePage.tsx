@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import styles from './ProfilePage.module.scss'
 import { Button } from '../../UI/button/Button'
 import {
@@ -20,7 +20,7 @@ import { ChangePhoto } from './changePhoto/ChangePhoto'
 import { isSelfProfile } from '../../utils/constants'
 import { useParams } from 'react-router-dom'
 
-export const ProfilePage: React.FC = () => {
+export const ProfilePage: React.FC = memo(() => {
   const dispatch = useAppDispatch()
   const state = useAppSelector(state => state.MainReducer.profile)
   const [editMode, setEditMode] = useState<string>('')
@@ -33,8 +33,6 @@ export const ProfilePage: React.FC = () => {
     typeof params.profileId === 'string' &&
       dispatch(thunkGetProfile({ uuid: params.profileId }))
   }, [params.profileId])
-
-  console.log('state:', state)
 
   let timer: NodeJS.Timeout
   const onChangeInput = useCallback((event: any, field: string | undefined) => {
@@ -261,19 +259,6 @@ export const ProfilePage: React.FC = () => {
             editModeLayout={editModeLayout}
           />
         )}
-        {editMode === 'address' ? (
-          <>{editModeLayout({ field: 'address' })}</>
-        ) : (
-          <>
-            <div className={styles.withEdit}>
-              <p>
-                Местоположение:
-                <span className={styles.lightText}> need reverse geocode </span>
-              </p>
-              {editImage('address')}
-            </div>
-          </>
-        )}
 
         {/*MAP*/}
         <div>
@@ -282,4 +267,4 @@ export const ProfilePage: React.FC = () => {
       </div>
     </div>
   )
-}
+})

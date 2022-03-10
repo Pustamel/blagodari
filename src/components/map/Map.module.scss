@@ -1,0 +1,16 @@
+.containerMap {
+  width: 100%;
+  height: 100%;
+}
+
+.withEdit {
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+
+  button {
+    max-width: 300px;
+  }
+}

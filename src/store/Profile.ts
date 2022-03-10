@@ -24,8 +24,8 @@ const initialState: initialStateType = {
       first_name: '',
       photo: '',
       uuid: '',
-      longitude: '',
-      latitude: '',
+      longitude: null,
+      latitude: null,
       dod: null,
       dob: null,
     },
@@ -34,8 +34,8 @@ const initialState: initialStateType = {
       first_name: '',
       photo: '',
       uuid: '',
-      longitude: '',
-      latitude: '',
+      longitude: null,
+      latitude: null,
       dod: null,
       dob: null,
     },
@@ -97,6 +97,15 @@ export const MainReducer = createSlice({
         }
       }
     },
+    changeLocation: (state, action) => {
+      const lat = action.payload.lat
+      const lng = action.payload.lng
+      state.profile = {
+        ...state.profile,
+        latitude: lat,
+        longitude: lng,
+      }
+    },
   },
   extraReducers: {
     [thunkGetProfile.fulfilled.type]: (
@@ -112,7 +121,6 @@ export const MainReducer = createSlice({
       state.loading = false
     },
     [thunkChangeProfile.fulfilled.type]: (state, action) => {
-      console.log(action)
       const field = action.meta.arg.field
       const data = action.meta.arg.data
       state.profile = {
@@ -151,4 +159,5 @@ export const MainReducer = createSlice({
   },
 })
 
-export const { setAuth, changeParentFields, deleteParent } = MainReducer.actions
+export const { setAuth, changeParentFields, deleteParent, changeLocation } =
+  MainReducer.actions
